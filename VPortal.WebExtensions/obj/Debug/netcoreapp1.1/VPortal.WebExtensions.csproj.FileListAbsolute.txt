@@ -1,0 +1,9 @@
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\bin\Debug\netcoreapp1.1\VPortal.WebExtensions.deps.json
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\bin\Debug\netcoreapp1.1\VPortal.WebExtensions.dll
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\bin\Debug\netcoreapp1.1\VPortal.WebExtensions.pdb
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\obj\Debug\netcoreapp1.1\VPortal.WebExtensions.csprojResolveAssemblyReference.cache
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\obj\Debug\netcoreapp1.1\VPortal.WebExtensions.AssemblyInfo.cs
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\obj\Debug\netcoreapp1.1\VPortal.WebExtensions.dll
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\obj\Debug\netcoreapp1.1\VPortal.WebExtensions.pdb
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\bin\Debug\netcoreapp1.1\VPortal.Core.dll
+D:\VerscendProjs\VPortal\VPortal.WebExtensions\bin\Debug\netcoreapp1.1\VPortal.Core.pdb
