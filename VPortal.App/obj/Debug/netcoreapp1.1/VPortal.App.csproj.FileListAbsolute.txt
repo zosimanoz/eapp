@@ -1,9 +1,0 @@
-D:\VerscendProjs\VPortal\VPortal.App\bin\Debug\netcoreapp1.1\VPortal.App.deps.json
-D:\VerscendProjs\VPortal\VPortal.App\bin\Debug\netcoreapp1.1\VPortal.App.runtimeconfig.json
-D:\VerscendProjs\VPortal\VPortal.App\bin\Debug\netcoreapp1.1\VPortal.App.runtimeconfig.dev.json
-D:\VerscendProjs\VPortal\VPortal.App\bin\Debug\netcoreapp1.1\VPortal.App.dll
-D:\VerscendProjs\VPortal\VPortal.App\bin\Debug\netcoreapp1.1\VPortal.App.pdb
-D:\VerscendProjs\VPortal\VPortal.App\obj\Debug\netcoreapp1.1\VPortal.App.csprojResolveAssemblyReference.cache
-D:\VerscendProjs\VPortal\VPortal.App\obj\Debug\netcoreapp1.1\VPortal.App.AssemblyInfo.cs
-D:\VerscendProjs\VPortal\VPortal.App\obj\Debug\netcoreapp1.1\VPortal.App.dll
-D:\VerscendProjs\VPortal\VPortal.App\obj\Debug\netcoreapp1.1\VPortal.App.pdb
