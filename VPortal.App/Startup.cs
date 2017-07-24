@@ -35,6 +35,7 @@ namespace VPortal.App
 
             // other services are injected here
             services.AddTransient<ITestTableService,TestTableService>();
+            services.AddTransient<INewTableService,NewTableService>();
             
             services.AddMvc();
         }

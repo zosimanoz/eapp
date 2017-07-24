@@ -26,15 +26,30 @@ namespace VPortal.App.Controllers
         public int RowTotal {get; set;}
     }
 
+
+     [Table("NewTable")]
+    public class NewTable 
+    {
+        [Key]
+        public int Id { get; set; }
+        public string user_name { get; set; }
+        public string user_address { get; set; }
+
+        [IgnoreAll]
+        public int RowTotal {get; set;}
+    }
+
     public class HomeController : Controller
     {
         private ITestTableService _testService;
+        private INewTableService _newService;
         private ILogger _logger;
 
-        public HomeController(ITestTableService testService, ILogger logger)
+        public HomeController(ITestTableService testService, ILogger logger,INewTableService newService)
         {
             _testService = testService;
             _logger = logger;
+            _newService = newService;
         }
         
         public IActionResult Index()
@@ -55,7 +70,7 @@ namespace VPortal.App.Controllers
             }
 
             // get record by id
-            var d = _testService.CrudService.Get(1);
+            //var d = _testService.CrudService.Get(1);
 
             _logger.Log(LogType.Info, () => "Data Got successfully");
 
@@ -66,7 +81,7 @@ namespace VPortal.App.Controllers
                 Email = "manoj@gmail.com"
             };
 
-            var data = _testService.CrudService.Insert(model);
+            //var data = _testService.CrudService.Insert(model);
 
             // model to update
             var modelUpdate = new TestTable()
@@ -76,13 +91,13 @@ namespace VPortal.App.Controllers
                 Email = "rakesh@gmail.com"
             };
 
-            _testService.CrudService.Update(modelUpdate);
+            //_testService.CrudService.Update(modelUpdate);
 
 
             // remove the data from db
-            _testService.CrudService.Delete(104);
+            //_testService.CrudService.Delete(104);
 
-            Console.WriteLine(data);
+           
             return View();
         }
 
@@ -90,11 +105,11 @@ namespace VPortal.App.Controllers
         {
 
             // get list of data using async
-            var data = await _testService.CrudService.GetListAsync();
+           // var data = await _testService.CrudService.GetListAsync();
 
             // get data by pagination (pageNum,rowsPerpage,pageSize,conditions,orderby,parameters)
-            var pagdata1 = await _testService.CrudService.GetListPagedAsync(1, 10, 1, "", "");
-            var pagdata2 = await _testService.CrudService.GetListPagedAsync(10, 10, 1, "", "");
+           // var pagdata1 = await _testService.CrudService.GetListPagedAsync(1, 10, 1, "", "");
+          //  var pagdata2 = await _testService.CrudService.GetListPagedAsync(10, 10, 1, "", "");
 
             ViewData["Message"] = "Your application description page.";
 
@@ -103,6 +118,16 @@ namespace VPortal.App.Controllers
 
         public IActionResult Contact()
         {
+
+            // new model to insert into database
+            var model = new NewTable()
+            {
+                user_name = "manoj",
+                user_address = "lokanthai"
+            };
+
+            var data = _newService.NewCrudService.Insert(model);
+
             ViewData["Message"] = "Your contact page.";
 
             return View();
