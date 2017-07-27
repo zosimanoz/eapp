@@ -76,10 +76,9 @@ namespace VExam.Api
         public void Register(IApplicationBuilder app)
         {
          
-            string issuer = TokenHandler.TokenIssuerName;
-            string audience = TokenHandler.TokenIssuerName;
-            var secret = Encoding.UTF8.GetBytes(TokenHandler.PrivateKey);
-            Console.WriteLine(TokenHandler.PrivateKey);
+            string issuer =Configuration.GetSection("TokenAuthentication:Issuer").Value;
+            string audience = Configuration.GetSection("TokenAuthentication:Audience").Value;
+            var secret = Encoding.UTF8.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value);
             
             var tokenProviderOptions = new TokenProviderOptions
             {
