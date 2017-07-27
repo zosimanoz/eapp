@@ -10,5 +10,7 @@ namespace VExam.Api.DTO
         public string ComplexityCode { get; set; }
         public string ComplexityTitle { get; set; }
         public bool Deleted { get; set; }
+         [IgnoreAll]
+        public int RowTotal {get; set;}
     }
 }

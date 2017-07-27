@@ -1,3 +1,5 @@
+using VPortal.Core.Data.Crud.Attributes;
+
 namespace VExam.Api.DTO
 {
     public class User
@@ -14,6 +16,8 @@ namespace VExam.Api.DTO
       public int DepartmentId { get; set; }
       public string ProfilePicture { get; set; }
       public bool Deleted { get; set; }
+       [IgnoreAll]
+        public int RowTotal {get; set;}
 
     }
 }

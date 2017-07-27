@@ -14,5 +14,7 @@ namespace VExam.Api.DTO
         public long CreatedBy { get; set; }
         public DateTime AuditTs { get; set; }
         public bool Deleted { get; set; }
+         [IgnoreAll]
+        public int RowTotal {get; set;}
     }
 }

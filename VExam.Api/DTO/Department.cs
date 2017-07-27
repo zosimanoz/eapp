@@ -10,5 +10,7 @@ namespace VExam.Api.DTO
         public string DepartmentCode { get; set; }
         public string DepartmentName { get; set; }
         public bool Deleted { get; set; }
+         [IgnoreAll]
+        public int RowTotal {get; set;}
     }
 }

@@ -10,5 +10,7 @@ namespace VExam.Api.DTO
         public string TypeCode { get; set; }
         public string TypeName { get; set; }
         public bool Deleted { get; set; }
+         [IgnoreAll]
+        public int RowTotal {get; set;}
     }
 }

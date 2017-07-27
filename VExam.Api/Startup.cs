@@ -127,7 +127,7 @@ namespace VExam.Api
         }
         private Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
-            // DEMO CODE, DON NOT USE IN PRODUCTION!!!
+            // DEMO CODE
             Console.WriteLine(username);
             if (username == "TEST" && password == "TEST123")
             {

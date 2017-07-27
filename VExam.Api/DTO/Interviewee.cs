@@ -16,5 +16,7 @@ namespace VExam.Api.DTO
         public string ContactNumber { get; set; }
         public string ProfilePicture { get; set; }
         public bool Deleted { get; set; }
+         [IgnoreAll]
+        public int RowTotal {get; set;}
     }
 }

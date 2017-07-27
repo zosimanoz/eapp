@@ -10,5 +10,7 @@ namespace VExam.Api.DTO
         public string JobTitle { get; set; }
         public string Description { get; set; }
         public bool Deleted { get; set; }
+         [IgnoreAll]
+        public int RowTotal {get; set;}
     }
 }
