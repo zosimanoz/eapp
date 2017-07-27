@@ -2,33 +2,34 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VExam.Api.DTO;
-using VExam.Api.Services.JobTitle;
+using VExam.Api.Services.QuestionCategories;
+using VExam.Api.Services.QuestionComplexities;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    [Route("api/v1/jobs")]
-    public class JobsApiController : BaseApiController
-
+     [Route("api/v1/qustion/complexity")]
+    public class QuestionComplexityApiController : BaseApiController
     {
-        private IJobTitleService _jobService;
+        
+        private IQuestionComplexityService _questionComplexityService;
         private ILogger _logger;
 
-        public JobsApiController(IJobTitleService JobService, ILogger logger)
+        public QuestionComplexityApiController(IQuestionComplexityService questoinComplexity, ILogger logger)
         {
-            _jobService = JobService;
+            _questionComplexityService = questoinComplexity;
             _logger = logger;
         }
 
         [HttpPost]
       //  [Authorize]
         [Route("new")]
-        public async Task<ApiResponse> PostAsync([FromBody] JobTitles model)
+        public async Task<ApiResponse> PostAsync([FromBody] QuestionCategory model)
         {
             try
             {
-                var result = await _jobService.CrudService.InsertAsync(model);
+                var result = await _questionComplexityService.CrudService.InsertAsync(model);
                 return HttpResponse(200, "", result.Value);
             }
             catch (Exception e)
@@ -44,7 +45,7 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                var result = await _jobService.CrudService.GetListAsync();
+                var result = await _questionComplexityService.CrudService.GetListAsync();
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

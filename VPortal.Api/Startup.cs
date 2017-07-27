@@ -48,6 +48,7 @@ namespace VPortal.Api
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            
         }
     }
 }

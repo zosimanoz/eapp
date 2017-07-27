@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using VExam.Api.Services.Departments;
 using VExam.Api.Services.JobTitle;
+using VExam.Api.Services.Question;
 using VPortal.Core.DIExtensions;
 using VPortal.TokenManager;
 
@@ -56,6 +57,7 @@ namespace VExam.Api
             //custom services...
             services.AddTransient<IDepartmentService,DepartmentService>();
             services.AddTransient<IJobTitleService,JobTitleService>();
+            services.AddTransient<IQuestionService,QuestionService>();
             
             
             

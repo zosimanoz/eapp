@@ -88,7 +88,7 @@ namespace VPortal.Core.Log
                 AddLog(string.Format("{0}{1}", json, Environment.NewLine));
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

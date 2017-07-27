@@ -13,9 +13,11 @@ namespace VPortal.Api.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+         //   AddAuthenticationCookie("a");
             return new string[] { "value1", "value2" };
         }
 
+        
         // GET api/values/5
         [HttpGet("{id}")]
         public string Get(int id)

@@ -39,7 +39,6 @@ namespace VPortal.App.Controllers
                 _logger.Log(LogType.Error, () => e.Message, e);
                 return HttpResponse(500, e.Message);
             }
-
         }
 
     }

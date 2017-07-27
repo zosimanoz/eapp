@@ -41,39 +41,38 @@ namespace VPortal.App.Controllers
 
     public class HomeController : Controller
     {
-        private ITestTableService _testService;
-        private INewTableService _newService;
-        private ILogger _logger;
+      //  private ITestTableService _testService;
+        //private INewTableService _newService;
+    //    private ILogger _logger;
 
-        public HomeController(ITestTableService testService, ILogger logger,INewTableService newService)
-        {
-            _testService = testService;
-            _logger = logger;
-            _newService = newService;
-        }
+        // public HomeController(ITestTableService testService, ILogger logger,INewTableService newService)
+        // {
+        //     _testService = testService;
+        //     _logger = logger;
+        //     _newService = newService;
+        // }
         
         public IActionResult Index()
         {
-
 
             try
             {
                 int a = 5;
                 int div = a / 0;
 
-                _logger.Log(LogType.Info, () => "The division of {a} by 0 is :" + div.ToString());
+             //   _logger.Log(LogType.Info, () => "The division of {a} by 0 is :" + div.ToString());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Logger takes logtype, log status as a function and the exception message
-                _logger.Log(LogType.Error, () => ex.ToString(),ex.Message);
+            //    _logger.Log(LogType.Error, () => ex.ToString(),ex.Message);
             }
 
             // get record by id
-            //var d = _testService.CrudService.Get(1);
+         //   var d = _testService.CrudService.Get("where name = @name",new { @name = "manoj" });
 
-            _logger.Log(LogType.Info, () => "Data Got successfully");
-
+        //    _logger.Log(LogType.Info, () => "Data Got successfully");
+//
             // new model to insert into database
             var model = new TestTable()
             {
@@ -94,6 +93,7 @@ namespace VPortal.App.Controllers
             //_testService.CrudService.Update(modelUpdate);
 
 
+
             // remove the data from db
             //_testService.CrudService.Delete(104);
 
@@ -101,7 +101,7 @@ namespace VPortal.App.Controllers
             return View();
         }
 
-        public async Task<IActionResult> About()
+        public IActionResult About()
         {
 
             // get list of data using async
@@ -120,15 +120,15 @@ namespace VPortal.App.Controllers
         {
 
             // new model to insert into database
-            var model = new NewTable()
-            {
-                user_name = "manoj",
-                user_address = "lokanthai"
-            };
+            // var model = new NewTable()
+            // {
+            //     user_name = "manoj",
+            //     user_address = "lokanthai"
+            // };
 
-            var data = _newService.NewCrudService.Insert(model);
+            // var data = _newService.NewCrudService.Insert(model);
 
-            ViewData["Message"] = "Your contact page.";
+            // ViewData["Message"] = "Your contact page.";
 
             return View();
         }
