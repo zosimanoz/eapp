@@ -9,6 +9,7 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
+    [Route("api/v1/department")]
     public class DepartmentApiController : BaseApiController
 
     {
@@ -22,8 +23,8 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-      //  [Authorize]
-        [Route("api/department/new")]
+        //  [Authorize]
+        [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] Department model)
         {
             try
@@ -38,8 +39,8 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
-      //  [Authorize]
-        [Route("api/department/get-all")]
+        //  [Authorize]
+        [Route("get/all")]
         public async Task<ApiResponse> GetAllAsync()
         {
             try

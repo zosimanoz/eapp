@@ -91,7 +91,7 @@ namespace VExam.Api.Controllers
 
         [HttpGet]
         //  [Authorize]
-        [Route("api/department/get-all")]
+        [Route("get/all")]
         public async Task<ApiResponse> GetAllAsync()
         {
             try
