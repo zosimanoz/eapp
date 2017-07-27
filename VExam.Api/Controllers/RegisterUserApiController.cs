@@ -9,13 +9,13 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    public class RegisterUserController : BaseApiController
+    public class RegisterUserApiController : BaseApiController
 
     {
         private IIntervieweeService _intervieweeService;
         private ILogger _logger;
 
-        public RegisterUserController(IIntervieweeService intervieweeService, ILogger logger)
+        public RegisterUserApiController(IIntervieweeService intervieweeService, ILogger logger)
         {
             _intervieweeService = intervieweeService;
             _logger = logger;

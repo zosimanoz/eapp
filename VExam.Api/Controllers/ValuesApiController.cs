@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace VExam.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class ValuesApiController : Controller
     {
         // GET api/values
         [HttpPost]
        // [ValidateAntiForgeryToken]
-         [Route("api/logout")]
+         [Route("logout")]
         public async Task<bool> Logout()
         {
             Console.WriteLine("Logging out...");
