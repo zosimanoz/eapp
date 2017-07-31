@@ -17,6 +17,7 @@ using VExam.Api.Services.JobTitle;
 using VExam.Api.Services.Question;
 using VPortal.Core.DIExtensions;
 using VPortal.TokenManager;
+using Newtonsoft.Json.Serialization;
 
 namespace VExam.Api
 {
@@ -26,7 +27,7 @@ namespace VExam.Api
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -38,29 +39,33 @@ namespace VExam.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-             // Add framework services.
+            // Add framework services.
             services.AddSingleton(Configuration);
             var serviceProvider = services.BuildServiceProvider();
 
             // The services of the core engine are injected here
             // core engine has services related to database and logger
             services.RegisterVPortalCoreServices(serviceProvider);
-            services.AddMvc();
+
+            // By default the json result from WebApi is camelCased, so convert it into PascalCase for easiness using SerializerSettings
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
                 options.Cookies.ApplicationCookie.AutomaticChallenge = true;
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "Bearer";
             });
+
             services.AddMvcCore();
-            
+
             //custom services...
-            services.AddTransient<IDepartmentService,DepartmentService>();
-            services.AddTransient<IJobTitleService,JobTitleService>();
-            services.AddTransient<IQuestionService,QuestionService>();
-            
-            
-            
+            services.AddTransient<IDepartmentService, DepartmentService>();
+            services.AddTransient<IJobTitleService, JobTitleService>();
+            services.AddTransient<IQuestionService, QuestionService>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,19 +74,19 @@ namespace VExam.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-//app.UseIdentity();
+            //app.UseIdentity();
             Register(app);
             app.UseMvc();
-         
-            
+
+
         }
         public void Register(IApplicationBuilder app)
         {
-         
-            string issuer =Configuration.GetSection("TokenAuthentication:Issuer").Value;
+
+            string issuer = Configuration.GetSection("TokenAuthentication:Issuer").Value;
             string audience = Configuration.GetSection("TokenAuthentication:Audience").Value;
             var secret = Encoding.UTF8.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value);
-            
+
             var tokenProviderOptions = new TokenProviderOptions
             {
                 Path = Configuration.GetSection("TokenAuthentication:TokenPath").Value,
@@ -124,7 +129,7 @@ namespace VExam.Api
                     })
             });
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(tokenProviderOptions));
-           // app.UseIdentity();
+            // app.UseIdentity();
         }
         private Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
