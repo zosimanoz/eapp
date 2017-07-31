@@ -29,13 +29,16 @@ namespace VExam.Api.Controllers
         {
             try
             {
+                Console.WriteLine("hlw ma yeha xu");
+                Console.WriteLine("code: ");
                 var result = await _departmentService.CrudService.InsertAsync(model);
+                     Console.WriteLine(result.Value);
                 return HttpResponse(200, "", result.Value);
             }
             catch (Exception e)
             {
                 _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
+                return HttpResponse(500, model.DepartmentCode);
             }
         }
         [HttpGet]
