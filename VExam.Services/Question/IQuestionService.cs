@@ -17,6 +17,7 @@ namespace VExam.Services.Question
         CrudService<ObjectiveQuestionOption> ObjectiveOptionCrudService { get; set; }
         Task<int> AddQuestionAsync(QuestionViewModel model);
         Task<int> DeleteQuestionAsync(long questionId);
-       Task<IEnumerable<QuestionBanks>> SearchQuestionAsync(QuestionSearch model);
+        Task<IEnumerable<QuestionBanks>> SearchQuestionAsync(QuestionSearch model);
+        Task<IEnumerable<QuestionBanks>> SelectQuestionBankViewAsync();
     }
 }

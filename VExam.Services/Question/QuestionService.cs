@@ -114,7 +114,7 @@ namespace VExam.Services.Question
                 var dbfactory = DbFactoryProvider.GetFactory();
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
-                   string questionQuery = "SELECT * FROM dbo.QuestionBank WHERE " +
+                   string questionQuery = "SELECT * FROM dbo.QuestionBankView WHERE " +
                                             "(@QuestionTypeId IS NULL OR QuestionTypeId = @QuestionTypeId)" +
                                             "AND (@QuestionCategoryId IS NULL OR QuestionCategoryId = @QuestionCategoryId)"+
                                             "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId)"+
@@ -131,6 +131,24 @@ namespace VExam.Services.Question
                     });
                     Console.WriteLine(questionQuery);
 
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+         public async Task<IEnumerable<QuestionBanks>> SelectQuestionBankViewAsync()
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                   string questionQuery = "SELECT * FROM dbo.QuestionBankView";
+                    var result = await db.QueryAsync<QuestionBanks>(questionQuery);
                     return result;
                 }
             }

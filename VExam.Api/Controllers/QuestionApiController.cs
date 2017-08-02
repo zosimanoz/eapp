@@ -45,7 +45,7 @@ namespace VExam.Api.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPut]
         //  [Authorize]
         [Route("update")]
         public async Task<ApiResponse> UpdateAsync([FromBody] QuestionViewModel model)
@@ -70,9 +70,9 @@ namespace VExam.Api.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPut]
         //  [Authorize]
-        [Route("delete")]
+        [Route("delete/{questionId}")]
         public async Task<ApiResponse> DeleteAsync(long questionId)
         {
             try
@@ -114,6 +114,23 @@ namespace VExam.Api.Controllers
             try
             {
                 var result = await _questionService.SearchQuestionAsync(model);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpGet]
+        //  [Authorize]
+        [Route("select")]
+        public async Task<ApiResponse> SelectQuestionBankViewAsync()
+        {
+           try
+            {
+                var result = await _questionService.SelectQuestionBankViewAsync();
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

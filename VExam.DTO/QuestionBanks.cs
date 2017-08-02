@@ -14,11 +14,26 @@ namespace VExam.DTO
         public string Question { get; set; }
         public string Attachment { get; set; }
         public int QuestionComplexityId { get; set; }
-        public decimal?  Marks { get; set; }
+        public decimal? Marks { get; set; }
         public long PreParedBy { get; set; }
         public DateTimeOffset? AuditTs { get; set; }
         public bool Deleted { get; set; }
-         [IgnoreAll]
-        public int RowTotal {get; set;}
+        
+        [IgnoreAll]
+        public string QuestionTypeName { get; set; }
+        [IgnoreAll]
+        public string QuestionCategoryName { get; set; }
+        [IgnoreAll]
+        public string QuestionTypeCode { get; set; }
+        [IgnoreAll]
+        public string QuestionCategoryCode { get; set; }
+        [IgnoreAll]
+        public string QuestionComplexityName { get; set; }
+        [IgnoreAll]
+        public string QuestionComplexityCode { get; set; }
+        [IgnoreAll]
+        public string JobTitle { get; set; }
+        [IgnoreAll]
+        public int RowTotal { get; set; }
     }
 }

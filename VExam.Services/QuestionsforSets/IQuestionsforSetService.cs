@@ -8,12 +8,12 @@ using VExam.DTO;
 using System.Threading.Tasks;
 using VExam.DTO.ViewModel;
 
-namespace VExam.Services.QuestionSets
+namespace VExam.Services.QuestionsforSets
 {
-    public interface IQuestionSetService
+    public interface IQuestionsforSetService
     {
-         CrudService<QuestionSet> CrudService { get; set; }
-         Task<int> DeleteQuestionSetAsync(long questionSetId);
+         CrudService<SetQuestion> CrudService { get; set; }
+         Task<int> DeleteQuestionAsync(long questionSetId);
           Task<int> AddQuestionsAsync(SetQuestionViewModel model);
     }
 }

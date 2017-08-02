@@ -11,15 +11,16 @@ using VExam.DTO;
 using VExam.Services.QuestionSets;
 using System.Threading.Tasks;
 using VExam.DTO.ViewModel;
+ 
 
-namespace VExam.Services.QuestionSets
+namespace VExam.Services.QuestionsforSets
 {
-    public class QuestionSetService : IQuestionSetService
+    public class QuestionsforSetService : IQuestionsforSetService
     {
-        public CrudService<QuestionSet> CrudService { get; set; } = new CrudService<QuestionSet>();
+        public CrudService<SetQuestion> CrudService { get; set; } = new CrudService<SetQuestion>();
         
 
-        public async Task<int> DeleteQuestionSetAsync(long questionSetId)
+        public async Task<int> DeleteQuestionAsync(long SetQuestionId)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
@@ -27,12 +28,12 @@ namespace VExam.Services.QuestionSets
                 try
                 {
                     db.Open();
-                    string questionQuery = "UPDATE dbo.QuestionSets SET deleted = @delete WHERE QuestionSetId = @QuestionSetId";
+                    string questionQuery = "UPDATE dbo.SetQuestions SET deleted = @delete WHERE SetQuestionId = @SetQuestionId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
                             {
                                 delete = 1,
-                                QuestionSetId = questionSetId
+                                SetQuestionId = SetQuestionId
                             });
                     return result;
 
