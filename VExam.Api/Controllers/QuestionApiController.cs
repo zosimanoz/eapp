@@ -13,7 +13,7 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    [Route("api/question")]
+    [Route("api/v1/question")]
     public class QuestionApiController : BaseApiController
     {
 
