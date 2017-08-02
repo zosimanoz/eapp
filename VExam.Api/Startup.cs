@@ -12,12 +12,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using VExam.Api.Services.Departments;
-using VExam.Api.Services.JobTitle;
-using VExam.Api.Services.Question;
+using VExam.Services.Departments;
+using VExam.Services.JobTitle;
+using VExam.Services.Question;
 using VPortal.Core.DIExtensions;
 using VPortal.TokenManager;
 using Newtonsoft.Json.Serialization;
+using VExam.Services.Interviewees;
+using VExam.Services.DAL;
+using VExam.Services.QuestionCategories;
+using VExam.Services.QuestionComplexities;
+using VExam.Services.QuestionTypes;
 
 namespace VExam.Api
 {
@@ -63,6 +68,11 @@ namespace VExam.Api
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IJobTitleService, JobTitleService>();
             services.AddTransient<IQuestionService, QuestionService>();
+            services.AddTransient<IIntervieweeService, IntervieweeService>();
+            services.AddTransient<IQuestionCategoryService, QuestionCategoryService>();
+            services.AddTransient<IQuestionComplexityService, QuestionComplexityService>();
+            services.AddTransient<IQuestionTypeService, QuestionTypeService>();
+            
 
 
 
@@ -131,14 +141,15 @@ namespace VExam.Api
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(tokenProviderOptions));
             // app.UseIdentity();
         }
-        private Task<ClaimsIdentity> GetIdentity(string username, string password)
+         
+        private Task<ClaimsIdentity> GetIdentity(string emailaddress, string contactnumber)
         {
-            // DEMO CODE
-            Console.WriteLine(username);
-            if (username == "TEST" && password == "TEST123")
+            var result = Interviewees.IntervieweeValidationAsync(emailaddress,contactnumber).Result;
+            if (result)
             {
-                Console.WriteLine("authenticated");
-                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(username, "Token"), new Claim[] { }));
+                var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress,contactnumber).Result;
+                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailaddress, "EmailAddress"), new Claim[] {                    
+                 }));
             }
 
             // Account doesn't exists

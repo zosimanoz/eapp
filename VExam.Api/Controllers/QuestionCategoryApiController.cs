@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using VExam.Api.DTO;
-using VExam.Api.Services.QuestionCategories;
+using VExam.DTO;
+using VExam.Services.QuestionCategories;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
 

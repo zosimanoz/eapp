@@ -1,29 +1,29 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using VExam.Api.DTO;
-using VExam.Api.Services.Interviewees;
+using VExam.DTO;
+using VExam.Services.Interviewees;
 using VPortal.Core.Log;
 using VPortal.Core.Web;
 using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    public class RegisterUserApiController : BaseApiController
+    public class IntervieweeApiController : BaseApiController
 
     {
         private IIntervieweeService _intervieweeService;
         private ILogger _logger;
 
-        public RegisterUserApiController(IIntervieweeService intervieweeService, ILogger logger)
+        public IntervieweeApiController(IIntervieweeService intervieweeService, ILogger logger)
         {
             _intervieweeService = intervieweeService;
             _logger = logger;
         }
 
         [HttpPost]
-        [Route("api/register")]
-        public async Task<ApiResponse> PostAsync([FromBody] Interviewee model)
+        [Route("api/v1/interviewee/new")]
+        public async Task<ApiResponse> CreateAsync([FromBody] Interviewee model)
         {
             try
             {
@@ -36,5 +36,6 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+      
     }
 }

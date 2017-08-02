@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VExam.Api.DTO;
-using VExam.Api.Services.Departments;
+using VExam.DTO;
+using VExam.Services.Departments;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
 

@@ -4,9 +4,9 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using VExam.Api.DTO;
-using VExam.Api.Services.Question;
-using VExam.Api.ViewModel;
+using VExam.DTO;
+using VExam.Services.Question;
+using VExam.DTO.ViewModel;
 using VPortal.Core.Data;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
@@ -97,6 +97,23 @@ namespace VExam.Api.Controllers
             try
             {
                 var result = await _questionService.CrudService.GetListAsync();
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpPost]
+        //  [Authorize]
+        [Route("search")]
+        public async Task<ApiResponse> SearchQuestionBankAsync([FromBody] QuestionSearch model)
+        {
+            Console.WriteLine(model.QuestionTypeId);
+            try
+            {
+                var result = await _questionService.SearchQuestionAsync(model);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

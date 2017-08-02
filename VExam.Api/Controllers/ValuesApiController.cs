@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
+// using System.DirectoryServices;
+// using System.DirectoryServices.AccountManagement;
+
+
 namespace VExam.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -23,15 +27,20 @@ namespace VExam.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+       // [Authorize]
         public IEnumerable<string> Get()
         {
+         //    PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            // bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
+            // UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
+            
+            
             return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-         [Authorize]
+        [Authorize]
         public async Task<string> GetAsync(int id)
         {
             Console.WriteLine("Logging out...");
