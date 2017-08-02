@@ -16,7 +16,7 @@ CREATE TABLE dbo.Departments
 CREATE TABLE dbo.Users
 (
 	UserId									bigint IDENTITY PRIMARY key,
-	RoleId									int REFERENCES dbo.Roles NOT NULL,
+	RoleId									int REFERENCES dbo.Roles NOT NULL,-- roles may be multiple
 	EmailAddress							national character varying (100),
 	INumber 								national character varying (100) NOT NULL,
 	FirstName								national character varying(200) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE dbo.QuestionSets
 	Deleted									bit NOT NULL DEFAULT(0) 
 );
 
-CREATE TABLE dbo.SetQuestions
+CREATE TABLE dbo.SetQuestions -- sets should not be randomized for interviewees...
 (
 	SetQuestionId							bigint IDENTITY PRIMARY KEY,
 	QuestionSetId							bigint REFERENCES dbo.QuestionSets NOT NULL,
