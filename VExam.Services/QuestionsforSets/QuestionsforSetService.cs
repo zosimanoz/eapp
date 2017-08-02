@@ -11,7 +11,7 @@ using VExam.DTO;
 using VExam.Services.QuestionSets;
 using System.Threading.Tasks;
 using VExam.DTO.ViewModel;
- 
+using System.Collections.Generic;
 
 namespace VExam.Services.QuestionsforSets
 {
@@ -80,8 +80,6 @@ namespace VExam.Services.QuestionsforSets
                             throw;
                         }
                     }
-
-
                 }
                 catch (Exception)
                 {
@@ -89,6 +87,26 @@ namespace VExam.Services.QuestionsforSets
                 }
             }
         }
-
+        public async Task<IEnumerable<SetQuestion>> GetQuestionsBySetIdAsync(long questionSetId)
+        {
+           try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                   string questionQuery = "SELECT * FROM dbo.QuestionsForSetView "+
+                                          "WHERE QuestionSetId = @questionSetId "+
+                                          "ORDER BY QuestionTypeId, QuestionCategoryId,QuestionComplexityId";
+                    var result = await db.QueryAsync<SetQuestion>(questionQuery,new{
+                        questionSetId=questionSetId
+                    });
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

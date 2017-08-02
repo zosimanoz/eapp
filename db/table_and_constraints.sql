@@ -102,7 +102,7 @@ CREATE TABLE dbo.ObjectiveQuestionOptions
 CREATE TABLE dbo.QuestionSets
 (
 	QuestionSetId							bigint IDENTITY PRIMARY KEY,
-	Title									national character varying NOT NULL,
+	Title									national character varying(1000) NOT NULL,
 	JobTitleId								int REFERENCES JobTitles NOT NULL,
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),

@@ -7,13 +7,15 @@ using Dapper;
 using VExam.DTO;
 using System.Threading.Tasks;
 using VExam.DTO.ViewModel;
+using System.Collections.Generic;
 
 namespace VExam.Services.QuestionsforSets
 {
     public interface IQuestionsforSetService
     {
-         CrudService<SetQuestion> CrudService { get; set; }
-         Task<int> DeleteQuestionAsync(long questionSetId);
-          Task<int> AddQuestionsAsync(SetQuestionViewModel model);
+        CrudService<SetQuestion> CrudService { get; set; }
+        Task<int> DeleteQuestionAsync(long setQuestionId);
+        Task<int> AddQuestionsAsync(SetQuestionViewModel model);
+        Task<IEnumerable<SetQuestion>> GetQuestionsBySetIdAsync(long questionSetId);
     }
 }

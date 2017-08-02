@@ -45,49 +45,49 @@ namespace VExam.Services.QuestionSets
             }
 
         }
-        public async Task<int> AddQuestionsAsync(SetQuestionViewModel model)
-        {
-            var dbfactory = DbFactoryProvider.GetFactory();
-            using (var db = (SqlConnection)dbfactory.GetConnection())
-            {
-                try
-                {
-                    db.Open();
-                    using (IDbTransaction tran = db.BeginTransaction())
-                    {
-                        try
-                        {
-                             var result =0;
-                            foreach (var item in model.QuestionsForSet)
-                            {
-                                string optionQuery = "INSERT INTO dbo.SetQuestions VALUES"+
-                                " (@QuestionSetId, @QuestionId,@CreatedBy)";
-                               result= await db.ExecuteAsync(optionQuery,
-                                new
-                                {
-                                    QuestionSetId = item.QuestionSetId,
-                                    QuestionId = item.QuestionId,
-                                    CreatedBy = item.CreatedBy
-                                }, tran);
-                            }
+        // public async Task<int> AddQuestionsAsync(SetQuestionViewModel model)
+        // {
+        //     var dbfactory = DbFactoryProvider.GetFactory();
+        //     using (var db = (SqlConnection)dbfactory.GetConnection())
+        //     {
+        //         try
+        //         {
+        //             db.Open();
+        //             using (IDbTransaction tran = db.BeginTransaction())
+        //             {
+        //                 try
+        //                 {
+        //                      var result =0;
+        //                     foreach (var item in model.QuestionsForSet)
+        //                     {
+        //                         string optionQuery = "INSERT INTO dbo.SetQuestions VALUES"+
+        //                         " (@QuestionSetId, @QuestionId,@CreatedBy)";
+        //                        result= await db.ExecuteAsync(optionQuery,
+        //                         new
+        //                         {
+        //                             QuestionSetId = item.QuestionSetId,
+        //                             QuestionId = item.QuestionId,
+        //                             CreatedBy = item.CreatedBy
+        //                         }, tran);
+        //                     }
 
-                            tran.Commit();
-                            return result;
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-                    }
+        //                     tran.Commit();
+        //                     return result;
+        //                 }
+        //                 catch (Exception)
+        //                 {
+        //                     throw;
+        //                 }
+        //             }
 
 
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
+        //         }
+        //         catch (Exception)
+        //         {
+        //             throw;
+        //         }
+        //     }
+        // }
 
     }
 }

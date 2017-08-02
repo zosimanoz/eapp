@@ -12,14 +12,14 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/QuestionSet")]
-    public class QuestionSetApiController : BaseApiController
+    public class QuestionSetsApiController : BaseApiController
 
     {
         private IQuestionSetService _questionSetService;
         
         private ILogger _logger;
 
-        public QuestionSetApiController(IQuestionSetService questionSetService, ILogger logger)
+        public QuestionSetsApiController(IQuestionSetService questionSetService, ILogger logger)
         {
             _questionSetService = questionSetService;
             _logger = logger;
@@ -86,52 +86,6 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-        [HttpPost]
-        [Route("add/questions")]
-        public async Task<ApiResponse> AddQuestonsAsync([FromBody] SetQuestionViewModel model)
-        {
-            try
-            {
-                var result = await _questionSetService.AddQuestionsAsync(model);
-                return HttpResponse(200, "", result);
-            }
-            catch (Exception e)
-            {
-                _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
-            }
-        }
 
-        [HttpPut]
-        [Route("update/questions")]
-        public async Task<ApiResponse> UpdateQuestonsAsync([FromBody] SetQuestionViewModel model)
-        {
-            try
-            {
-                var result = await _questionSetService.CrudService.UpdateAsync(model);
-                return HttpResponse(200, "", result);
-            }
-            catch (Exception e)
-            {
-                _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
-            }
-        }
-
-         [HttpPut]
-        [Route("delete/question/{setQuestionId}")]
-        public async Task<ApiResponse> DeleteQuestionAsync(long setQuestionId)
-        {
-            try
-            {
-                var result = await _questionSetService.DeleteQuestionSetAsync(setQuestionId);
-                return HttpResponse(200, "", result);
-            }
-            catch (Exception e)
-            {
-                _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
-            }
-        }
     }
 }

@@ -23,6 +23,7 @@ using VExam.Services.DAL;
 using VExam.Services.QuestionCategories;
 using VExam.Services.QuestionComplexities;
 using VExam.Services.QuestionTypes;
+using VExam.Services.QuestionsforSets;
 
 namespace VExam.Api
 {
@@ -73,6 +74,7 @@ namespace VExam.Api
             services.AddTransient<IQuestionCategoryService, QuestionCategoryService>();
             services.AddTransient<IQuestionComplexityService, QuestionComplexityService>();
             services.AddTransient<IQuestionTypeService, QuestionTypeService>();
+            services.AddTransient<IQuestionsforSetService, QuestionsforSetService>();
             
 
 

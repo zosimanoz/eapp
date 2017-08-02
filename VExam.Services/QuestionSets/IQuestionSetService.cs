@@ -14,6 +14,6 @@ namespace VExam.Services.QuestionSets
     {
          CrudService<QuestionSet> CrudService { get; set; }
          Task<int> DeleteQuestionSetAsync(long questionSetId);
-          Task<int> AddQuestionsAsync(SetQuestionViewModel model);
+         
     }
 }
