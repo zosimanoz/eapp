@@ -62,7 +62,8 @@ namespace VExam.Api
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "Bearer";
             });
 
-            services.AddMvcCore();
+            services.AddMvcCore().AddJsonFormatters();
+            services.AddCors();
 
             //custom services...
             services.AddTransient<IDepartmentService, DepartmentService>();
@@ -86,6 +87,10 @@ namespace VExam.Api
 
             //app.UseIdentity();
             Register(app);
+
+            app.UseCors(builder =>
+                    builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
             app.UseMvc();
 
 

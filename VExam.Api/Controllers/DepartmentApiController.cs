@@ -29,15 +29,35 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                var result = await _departmentService.CrudService.InsertAsync(model);
-                return HttpResponse(200, "", result.Value);
+                if(model.DepartmentId == 0){
+                    var result = await _departmentService.CrudService.InsertAsync(model);
+                    return HttpResponse(200, "", result.Value);
+                }else {
+                    var result = await _departmentService.CrudService.UpdateAsync(model);
+                    return HttpResponse(200, "", result);
+                }
             }
             catch (Exception e)
             {
                 _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, model.DepartmentCode);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<ApiResponse> GetById(int id){
+            try{
+                var result = await _departmentService.CrudService.GetAsync(id);
+                return HttpResponse(200, "", result);
+            }catch(Exception e){
+                _logger.Log(LogType.Error, () => e.Message, e);
                 return HttpResponse(500, e.Message);
             }
         }
+
+
         [HttpGet]
         //  [Authorize]
         [Route("get/all")]
