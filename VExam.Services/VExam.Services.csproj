@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+<ItemGroup>
+    <ProjectReference Include="..\VPortal.Core\VPortal.Core.csproj" />
+    <ProjectReference Include="..\VPortal.WebExtensions\VPortal.WebExtensions.csproj" />
+      <ProjectReference Include="..\VExam.DTO\VExam.DTO.csproj" />
+    
+  </ItemGroup>
+</Project>

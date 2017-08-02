@@ -50,16 +50,14 @@ namespace VPortal.TokenManager
 
         private async Task GenerateToken(HttpContext context)
         {
-            // var username = context.Request.Form["username"];
-            // var password = context.Request.Form["password"];
-           var username = "TEST";
-            var password = "TEST123";
+            var emailaddress = context.Request.Form["emailaddress"];
+            var contactnumber = context.Request.Form["contactnumber"];
         
-            var identity = await _options.IdentityResolver(username, password);
+            var identity = await _options.IdentityResolver(emailaddress, contactnumber);
             if (identity == null)
             {
                 context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Invalid username or password.");
+                await context.Response.WriteAsync("Invalid emailaddress or contactnumber.");
                 return;
             }
 
@@ -68,7 +66,7 @@ namespace VPortal.TokenManager
           
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Sub, emailaddress),
                 new Claim(JwtRegisteredClaimNames.Jti, await _options.NonceGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUniversalTime().ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             };

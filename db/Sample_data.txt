@@ -1,0 +1,27 @@
+SELECT TOP 1 id, Name
+FROM Persons
+ORDER BY NEWID()
+INSERT INTO Roles Values(1,'Admin','');
+INSERT INTO Users values(1,1,'surajv@gmail.com','i10400','Suraj','','V','','',6,'',0);
+INSERT INTO QuestionTypes values(1,'Sub','Subjective',0);
+INSERT INTO QuestionTypes values(2,'Obj','Objective',0);
+INSERT INTO QuestionCategories values(1,'Cat-1','C#','dsfsdf',0);
+INSERT INTO QuestionCategories values(2,'Cat-2','javascript','dssdf sdffsdf',0);
+INSERT INTO JobTitles values(1,'Asp.net Developer','dssdf sdffsdf',0);
+INSERT INTO QuestionComplexities values(1,'SMP','dssdf sdffsdf',0);
+INSERT INTO QuestionComplexities values(2,'MDM','Medium',0);
+INSERT INTO Questions values(1,1,1,'Question no. 1.','',1,100,1,GetDate(),0)
+
+
+
+insert into InterviewSessions values('Bhadra -2017- Dotnet', '1/1/2017','12/1/2017',1,2,GetDate(),0)
+select * from InterviewSessions
+
+
+
+INSERT INTO interviewees
+(EmailAddress,InterviewSessionId,FirstName,MiddleName,LastName,Address,ContactNumber,Attachments) Values
+('test@test.com',3,'Test0','','Test','Kathmandu','987456321','')
+
+select * from interviewees
+
