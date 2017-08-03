@@ -11,6 +11,7 @@ namespace VExam.DTO
         public string EmailAddress { get; set; }
         [Required]
         public long InterviewSessionId { get; set; }
+        public int JobTitleId { get; set; }
         [Required]
         public string FirstName { get; set; }
         public string MiddleName { get; set; }

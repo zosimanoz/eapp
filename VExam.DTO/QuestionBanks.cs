@@ -18,7 +18,7 @@ namespace VExam.DTO
         public long PreParedBy { get; set; }
         public DateTimeOffset? AuditTs { get; set; }
         public bool Deleted { get; set; }
-        
+
         [IgnoreAll]
         public string QuestionTypeName { get; set; }
         [IgnoreAll]
@@ -33,6 +33,8 @@ namespace VExam.DTO
         public string QuestionComplexityCode { get; set; }
         [IgnoreAll]
         public string JobTitle { get; set; }
+        [IgnoreAll]
+        public long IntervieweeId { get; set; }
         [IgnoreAll]
         public int RowTotal { get; set; }
     }

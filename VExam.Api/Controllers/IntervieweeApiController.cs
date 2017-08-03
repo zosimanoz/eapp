@@ -9,6 +9,7 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
+    [Route("api/v1/interviewee")]
     public class IntervieweeApiController : BaseApiController
 
     {
@@ -22,7 +23,7 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-        [Route("api/v1/interviewee/new")]
+        [Route("new")]
         public async Task<ApiResponse> CreateAsync([FromBody] Interviewee model)
         {
             try
@@ -36,6 +37,52 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-      
+
+        [HttpPut]
+        [Route("delete")]
+        public async Task<ApiResponse> DeleteAsync(long intervieweeId)
+        {
+            try
+            {
+                var result = await _intervieweeService.DeleteIntervieweeAsync(intervieweeId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<ApiResponse> UpdateAsync([FromBody] Interviewee model)
+        {
+            try
+            {
+                var result = await _intervieweeService.CrudService.UpdateAsync(model);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpGet]
+        [Route("interview/questions/{intervieweeId}")]
+        public async Task<ApiResponse> GetQuestionAsync(long intervieweeId)
+        {
+            try
+            {
+                var result = await _intervieweeService.GetinterviewQuestions(intervieweeId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
     }
 }

@@ -6,13 +6,17 @@ using System.Data.SqlClient;
 using Dapper;
 using VExam.DTO;
 using System.Threading.Tasks;
+using VExam.DTO.ViewModel;
+using System.Collections.Generic;
 
 namespace VExam.Services.Interviewees
 {
     public interface IIntervieweeService
     {
-         CrudService<Interviewee> CrudService { get; set; }
+        CrudService<Interviewee> CrudService { get; set; }
 
-         Task<bool> IntervieweeValidationAsync(string emailaddress, string contactnumber);
+        Task<bool> IntervieweeValidationAsync(string emailaddress, string contactnumber);
+        Task<long> DeleteIntervieweeAsync(long intervieweeId);
+        Task<IEnumerable<QuestionViewModel>> GetinterviewQuestions(long intervieweeId);
     }
 }

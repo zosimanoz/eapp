@@ -8,18 +8,14 @@ using VPortal.Core.Data;
 using System.Text;
 using System;
 using VExam.DTO;
-using VExam.Services.QuestionSets;
 using System.Threading.Tasks;
-using VExam.DTO.ViewModel;
 
-namespace VExam.Services.QuestionSets
+namespace VExam.Services.SessionwiseJobs
 {
-    public class QuestionSetService : IQuestionSetService
+    public class SessionwiseJobsService : ISessionwiseJobsService
     {
-        public CrudService<QuestionSet> CrudService { get; set; } = new CrudService<QuestionSet>();
-        
-
-        public async Task<int> DeleteQuestionSetAsync(long questionSetId)
+        public CrudService<SessionwiseJob> CrudService { get; set; } = new CrudService<SessionwiseJob>();
+        public async Task<int> DeleteAsync(long sessionwiseJobId)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
@@ -27,12 +23,12 @@ namespace VExam.Services.QuestionSets
                 try
                 {
                     db.Open();
-                    string questionQuery = "UPDATE dbo.QuestionSets SET deleted = @delete WHERE QuestionSetId = @QuestionSetId";
+                    string questionQuery = "UPDATE dbo.SessionwiseJobs SET deleted = @delete WHERE SessionwiseJobId = @SetQuestionId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
                             {
                                 delete = 1,
-                                QuestionSetId = questionSetId
+                                SessionwiseJobId = sessionwiseJobId
                             });
                     return result;
 
@@ -45,6 +41,6 @@ namespace VExam.Services.QuestionSets
             }
 
         }
-       
+
     }
 }

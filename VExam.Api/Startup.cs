@@ -24,6 +24,7 @@ using VExam.Services.QuestionCategories;
 using VExam.Services.QuestionComplexities;
 using VExam.Services.QuestionTypes;
 using VExam.Services.QuestionsforSets;
+using VExam.Services.SessionwiseJobs;
 
 namespace VExam.Api
 {
@@ -75,10 +76,7 @@ namespace VExam.Api
             services.AddTransient<IQuestionComplexityService, QuestionComplexityService>();
             services.AddTransient<IQuestionTypeService, QuestionTypeService>();
             services.AddTransient<IQuestionsforSetService, QuestionsforSetService>();
-            
-
-
-
+            services.AddTransient<ISessionwiseJobsService, SessionwiseJobsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -148,14 +146,14 @@ namespace VExam.Api
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(tokenProviderOptions));
             // app.UseIdentity();
         }
-         
+
         private Task<ClaimsIdentity> GetIdentity(string emailaddress, string contactnumber)
         {
-            var result = Interviewees.IntervieweeValidationAsync(emailaddress,contactnumber).Result;
+            var result = Interviewees.IntervieweeValidationAsync(emailaddress, contactnumber).Result;
             if (result)
             {
-                var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress,contactnumber).Result;
-                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailaddress, "EmailAddress"), new Claim[] {                    
+                var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress, contactnumber).Result;
+                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailaddress, "EmailAddress"), new Claim[] {
                  }));
             }
 

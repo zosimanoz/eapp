@@ -125,11 +125,21 @@ CREATE TABLE dbo.InterviewSessions
 	Title 									national character varying(500),
 	SessionStartDate						DATETIMEOFFSET,
 	SessionEndDate							DATETIMEOFFSET,
-	JobTitleId								int REFERENCES dbo.JobTitles NOT NULL,
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 
 
+);
+
+CREATE TABLE dbo.SessionwiseJobs
+(
+	SessionwiseJobs							bigint IDENTITY PRIMARY KEY,
+	InterviewSessionId						bigint REFERENCES dbo.InterviewSessions NOT NULL,
+	JobTitleId								int REFERENCES dbo.JobTitles NOT NULL,
+	QuestionSetId							bigint REFERENCES dbo.QuestionSets NOT NULL,
+	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
+	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),
+	Deleted									bit NOT NULL DEFAULT(0) 
 );
 
 CREATE TABLE dbo.Interviewees
@@ -137,12 +147,13 @@ CREATE TABLE dbo.Interviewees
 	IntervieweeId							bigint IDENTITY PRIMARY key,
 	EmailAddress							national character varying (100) NOT NULL,
 	InterviewSessionId						bigint REFERENCES dbo.InterviewSessions NOT NULL,
+	JobTitleId								int REFERENCES dbo.JobTitles NOT NULL,
 	FirstName								national character varying(200) NOT NULL,
 	MiddleName								national character varying (200),
 	LastName								national character varying(200) NOT NULL,
 	Address 								national character varying(200) NOT NULL,
 	ContactNumber							national character varying(200) NOT NULL,
-	Attachments										national character varying(1000),
+	Attachments								national character varying(1000),
 	Deleted									bit NOT NULL DEFAULT(0)
 );
 
