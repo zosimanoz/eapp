@@ -99,9 +99,9 @@ CREATE TABLE dbo.ObjectiveQuestionOptions
 -- 	Deleted									boolean NOT NULL DEFAULT(false)
 -- );
 
-CREATE TABLE dbo.QuestionSets
+CREATE TABLE dbo.ExamSets
 (
-	QuestionSetId							bigint IDENTITY PRIMARY KEY,
+	ExamSetId								bigint IDENTITY PRIMARY KEY,
 	Title									national character varying(1000) NOT NULL,
 	JobTitleId								int REFERENCES JobTitles NOT NULL,
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE dbo.QuestionSets
 CREATE TABLE dbo.SetQuestions -- sets should not be randomized for interviewees...
 (
 	SetQuestionId							bigint IDENTITY PRIMARY KEY,
-	QuestionSetId							bigint REFERENCES dbo.QuestionSets NOT NULL,
+	ExamSetId								bigint REFERENCES dbo.ExamSets NOT NULL,
 	QuestionId								bigint REFERENCES dbo.QuestionBank NOT NULL,
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),
@@ -136,7 +136,7 @@ CREATE TABLE dbo.SessionwiseJobs
 	SessionwiseJobs							bigint IDENTITY PRIMARY KEY,
 	InterviewSessionId						bigint REFERENCES dbo.InterviewSessions NOT NULL,
 	JobTitleId								int REFERENCES dbo.JobTitles NOT NULL,
-	QuestionSetId							bigint REFERENCES dbo.QuestionSets NOT NULL,
+	ExamSetId								bigint REFERENCES dbo.ExamSets NOT NULL,
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 
@@ -154,6 +154,7 @@ CREATE TABLE dbo.Interviewees
 	Address 								national character varying(200) NOT NULL,
 	ContactNumber							national character varying(200) NOT NULL,
 	Attachments								national character varying(1000),
+	AttendedExam							bit NOT NULL DEFAULT(0),
 	Deleted									bit NOT NULL DEFAULT(0)
 );
 
@@ -178,25 +179,40 @@ CREATE TABLE dbo.Interviewees
 	-- Deleted									bit NOT NULL DEFAULT(0) 
 -- );
 
-CREATE TABLE dbo.Exams
+CREATE TABLE dbo.AnswersByInterviewees
 (
+	AnswerId 								bigint IDENTITY PRIMARY key,
 	IntervieweeId 							bigint REFERENCES dbo.Interviewees NOT NULL,
-	SetQuestion_id 							bigint REFERENCES dbo.SetQuestions NOT NULL,
+	SetQuestionId 							bigint REFERENCES dbo.SetQuestions NOT NULL,
 	subjectiveAnswer						national character varying(MAX),
 	ObjectiveAnswer							national character varying(1000),
-	MarksObtained							decimal,
-	CheckedBy								bigint REFERENCES dbo.users,
+	AnsweredBy								bigint REFERENCES dbo.Interviewees,
 	AuditTs				 					DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 
 );
 
+CREATE TABLE dbo.CheckedBy
+(
+	CheckedById								int PRIMARY key,
+	Title									national character varying(500),
+	Deleted									bit NOT NULL DEFAULT(0)
+	
+);
+
+INSERT INTO dbo.CheckedBy Values
+(1,'Automatic by System',0);
+INSERT INTO dbo.CheckedBy Values
+(2,'Examiner',0);
+
+
 CREATE TABLE dbo.Results
 (
 	ResultId								bigint PRIMARY KEY,
-	InterviewSessionId  					bigint REFERENCES dbo.InterviewSessions,
-	IntervieweeId							bigint REFERENCES dbo.Interviewees,
-	TotalMarksObtained						decimal NOT NULL,
+	AnswerId 								bigint REFERENCES dbo.AnswersByInterviewees NOT NULL,
+	MarksObtained							decimal NOT NULL,
 	Remarks									national character varying(500),
+	CheckedBy 								int REFERENCES dbo.CheckedBy NOT NULL,
+	ExaminerId								bigint REFERENCES dbo.users,
 	AuditTs									DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 
 );

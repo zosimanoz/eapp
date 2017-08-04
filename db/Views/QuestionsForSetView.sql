@@ -2,7 +2,7 @@ CREATE VIEW QuestionsForSetView
 As
 SELECT 
 	SetQuestions.SetQuestionId,
-	SetQuestions.QuestionSetId,
+	SetQuestions.ExamSetId,
 	QuestionBank.QuestionId,
 	QuestionBank.QuestionTypeId,
 	QuestionTypes.TypeName AS QuestionTypeName,

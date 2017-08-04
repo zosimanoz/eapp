@@ -1,37 +1,31 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
-using VExam.DTO.ViewModel;
-using VExam.Services.Departments;
-using VExam.Services.QuestionSets;
+using VExam.Services.ExamSetService;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    [Route("api/v1/QuestionSet")]
-    public class QuestionSetsApiController : BaseApiController
-
+    [Route("api/v1/examset")]
+    public class ExamSetsApiController : BaseApiController
     {
-        private IQuestionSetService _questionSetService;
-        
-        private ILogger _logger;
+        private IExamSetService _examSetService;
 
-        public QuestionSetsApiController(IQuestionSetService questionSetService, ILogger logger)
+        private ILogger _logger;
+         public ExamSetsApiController(IExamSetService examSetService, ILogger logger)
         {
-            _questionSetService = questionSetService;
+            _examSetService = examSetService;
             _logger = logger;
         }
-
         [HttpPost]
         [Route("new/set")]
-        public async Task<ApiResponse> PostAsync([FromBody] QuestionSet model)
+        public async Task<ApiResponse> PostAsync([FromBody] DTO.ExamSet model)
         {
             try
             {
-                var result = await _questionSetService.CrudService.InsertAsync(model);
+                var result = await _examSetService.CrudService.InsertAsync(model);
                 return HttpResponse(200, "", result.Value);
             }
             catch (Exception e)
@@ -40,13 +34,13 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-        [HttpPut]
-        [Route("delete/set/{questionSetId}")]
-        public async Task<ApiResponse> DeleteAsync(long questionSetId)
+         [HttpPut]
+        [Route("delete/set/{examSetId}")]
+        public async Task<ApiResponse> DeleteAsync(long examSetId)
         {
             try
             {
-                var result = await _questionSetService.DeleteQuestionSetAsync(questionSetId);
+                var result = await _examSetService.DeleteExamSetAsync(examSetId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
@@ -61,7 +55,7 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                var result = await _questionSetService.CrudService.GetListAsync();
+                var result = await _examSetService.CrudService.GetListAsync();
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
@@ -72,12 +66,12 @@ namespace VExam.Api.Controllers
         }
 
         [HttpGet]
-        [Route("get/set/{questionSetId}")]
-        public async Task<ApiResponse> GetAsync(long questionSetId)
+        [Route("get/set/{examSetId}")]
+        public async Task<ApiResponse> GetAsync(long examSetId)
         {
             try
             {
-                var result = await _questionSetService.CrudService.GetAsync(questionSetId);
+                var result = await _examSetService.CrudService.GetAsync(examSetId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
@@ -86,6 +80,5 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-
     }
 }

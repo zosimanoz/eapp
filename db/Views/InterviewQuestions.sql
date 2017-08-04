@@ -1,22 +1,28 @@
 CREATE VIEW InterviewQuestions
 AS
 SELECT 
- dbo.QuestionBank.QuestionId,
- dbo.QuestionBank.Question,
- dbo.QuestionBank.QuestionTypeId,
- dbo.QuestionBank.Attachment,
- dbo.QuestionBank.Marks,
- dbo.Interviewees.IntervieweeId
+ dbo.QuestionBankView.QuestionId,
+ dbo.QuestionBankView.Question,
+ dbo.QuestionBankView.QuestionTypeId,
+ dbo.QuestionBankView.Attachment,
+ dbo.QuestionBankView.Marks,
+ dbo.QuestionBankView.JobTitle,
+ dbo.QuestionBankView.QuestionCategoryCode,
+ dbo.QuestionBankView.QuestionCategoryId,
+ dbo.QuestionBankView.QuestionCategoryName,
+ dbo.QuestionBankView.QuestionComplexityCode,
+ dbo.QuestionBankView.QuestionComplexityId,
+ dbo.QuestionBankView.QuestionComplexityName,
+ dbo.QuestionBankView.QuestionTypeCode,
+ dbo.QuestionBankView.QuestionTypeName,
+ dbo.Interviewees.IntervieweeId,
+ dbo.SetQuestions.SetQuestionId
  FROM dbo.Interviewees
 INNER JOIN dbo.SessionWiseJobs
 ON Interviewees.InterviewSessionId = dbo.SessionwiseJobs.InterviewSessionId
 AND Interviewees.JobTitleId = dbo.SessionwiseJobs.JobTitleId
 INNER JOIN dbo.SetQuestions
-ON dbo.SetQuestions.QuestionSetId = dbo.SessionwiseJobs.QuestionSetId
-INNER JOIN dbo.QuestionBank
-ON dbo.QuestionBank.QuestionId = dbo.SetQuestions.QuestionId;
-
-
-
-
+ON dbo.SetQuestions.ExamSetId = dbo.SessionwiseJobs.ExamSetId
+INNER JOIN dbo.QuestionBankView
+ON dbo.QuestionBankView.QuestionId = dbo.SetQuestions.QuestionId;
 

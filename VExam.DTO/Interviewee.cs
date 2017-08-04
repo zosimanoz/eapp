@@ -20,6 +20,7 @@ namespace VExam.DTO
         [Required]
         public string ContactNumber { get; set; }
         public string Attachments { get; set; }
+        public bool AttendedExam { get; set; }
         public bool Deleted { get; set; }
         [IgnoreAll]
         public string SessionTitle { get; set; }

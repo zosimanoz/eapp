@@ -8,7 +8,7 @@ namespace VExam.DTO
     {
         [Key]
         public long SetQuestionId { get; set; }
-        public long QuestionSetId { get; set; }
+        public long ExamSetId { get; set; }
         public long QuestionId { get; set; }
         public long CreatedBy { get; set; }
         public DateTimeOffset AuditTs { get; set; }

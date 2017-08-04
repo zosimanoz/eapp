@@ -3,11 +3,11 @@ using VPortal.Core.Data.Crud.Attributes;
 
 namespace VExam.DTO
 {
-    [Table("QuestionSets")]
-    public class QuestionSet
+    [Table("ExamSets")]
+    public class ExamSet
     {
         [Key]
-        public long QuestionSetId { get; set; }
+        public long ExamSetId { get; set; }
         public string Title { get; set; }
         public int JobTitleId { get; set; }
         public long CreatedBy { get; set; }

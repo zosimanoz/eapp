@@ -14,7 +14,8 @@ QuestionBank.Question,
 QuestionBank.Attachment,
 QuestionBank.QuestionComplexityId,
 QuestionComplexities.ComplexityTitle AS QuestionComplexityName,
-QuestionComplexities.ComplexityCode AS QuestionComplexityCode
+QuestionComplexities.ComplexityCode AS QuestionComplexityCode,
+QuestionBank.Marks
 FROM QuestionBank
 INNER JOIN QuestionTypes 
 ON QuestionTypes.QuestionTypeId = QuestionBank.QuestionTypeId

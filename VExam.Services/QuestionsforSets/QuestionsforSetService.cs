@@ -1,17 +1,15 @@
-using VPortal.Core.Data.Crud.Attributes;
-using VPortal.Core.Data.Crud;
 
+
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Dapper;
-using VPortal.Core.Data;
-using System.Text;
-using System;
-using VExam.DTO;
-using VExam.Services.QuestionSets;
 using System.Threading.Tasks;
+using Dapper;
+using VExam.DTO;
 using VExam.DTO.ViewModel;
-using System.Collections.Generic;
+using VPortal.Core.Data;
+using VPortal.Core.Data.Crud;
 
 namespace VExam.Services.QuestionsforSets
 {
@@ -62,11 +60,11 @@ namespace VExam.Services.QuestionsforSets
                             foreach (var item in model.QuestionsForSet)
                             {
                                 string optionQuery = "INSERT INTO dbo.SetQuestions VALUES"+
-                                " (@QuestionSetId, @QuestionId,@CreatedBy)";
+                                " (@ExamSetId, @QuestionId,@CreatedBy)";
                                result= await db.ExecuteAsync(optionQuery,
                                 new
                                 {
-                                    QuestionSetId = item.QuestionSetId,
+                                    ExamSetId = item.ExamSetId,
                                     QuestionId = item.QuestionId,
                                     CreatedBy = item.CreatedBy
                                 }, tran);
@@ -87,7 +85,7 @@ namespace VExam.Services.QuestionsforSets
                 }
             }
         }
-        public async Task<IEnumerable<SetQuestion>> GetQuestionsBySetIdAsync(long questionSetId)
+        public async Task<IEnumerable<SetQuestion>> GetQuestionsBySetIdAsync(long examSetId)
         {
            try
             {
@@ -95,10 +93,10 @@ namespace VExam.Services.QuestionsforSets
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
                    string questionQuery = "SELECT * FROM dbo.QuestionsForSetView "+
-                                          "WHERE QuestionSetId = @questionSetId "+
+                                          "WHERE ExamSetId = @examSetId "+
                                           "ORDER BY QuestionTypeId, QuestionCategoryId,QuestionComplexityId";
                     var result = await db.QueryAsync<SetQuestion>(questionQuery,new{
-                        questionSetId=questionSetId
+                        examSetId=examSetId
                     });
                     return result;
                 }

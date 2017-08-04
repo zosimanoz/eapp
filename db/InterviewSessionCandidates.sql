@@ -20,6 +20,7 @@ ON JobTitles.JobTitleId = InterviewSessions.JobTitleId
 WHERE InterviewSessions.SessionStartDate <= GetDate()
 AND InterviewSessions.SessionEndDate >= GetDate()
 AND InterviewSessions.Deleted = 0
-AND interviewees.Deleted = 0;
+AND Interviewees.Deleted = 0
+AND Interviewees.AttendedExam = 0;
 
 
