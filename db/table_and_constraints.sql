@@ -16,16 +16,14 @@ CREATE TABLE dbo.Departments
 CREATE TABLE dbo.Users
 (
 	UserId									bigint IDENTITY PRIMARY key,
-	RoleId									int REFERENCES dbo.Roles NOT NULL,-- roles may be multiple
-	EmailAddress							national character varying (100),
-	INumber 								national character varying (100) NOT NULL,
+	RoleId									national character varying(100) NOT NULL,
 	FirstName								national character varying(200) NOT NULL,
 	MiddleName								national character varying (200),
 	LastName								national character varying(200) NOT NULL,
-	Address 								national character varying(200) NOT NULL,
-	ContactNumber							national character varying(200) NOT NULL,
-	DepartmentId							int REFERENCES dbo.Departments,
-	ProfilePicture							national character varying(1000),
+	DepartmentId							int REFERENCES dbo.Departments NOT NULL,
+	EmailAddress							national character varying (100) NOT NULL,
+	Password 								national character varying (100) NOT NULL,
+	PasswordChanged							bit NOT NULL DEFAULT(0),
 	Deleted									bit NOT NULL DEFAULT(0)
 );
 

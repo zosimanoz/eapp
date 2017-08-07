@@ -9,5 +9,6 @@ namespace VExam.Services.Answers
     {
         CrudService<AnswersByInterviewees> CrudService { get; set; }
         Task<int> SaveAnswerAsync(AnswersViewModel model);
+       // Task<QuestionViewModel> FilterAnswerAsync(int questionType);
     }
 }

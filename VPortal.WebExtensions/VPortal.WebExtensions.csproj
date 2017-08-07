@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Core" Version="1.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\VPortal.Core\VPortal.Core.csproj" />
   </ItemGroup>
-
 </Project>

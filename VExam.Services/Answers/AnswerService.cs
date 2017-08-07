@@ -12,8 +12,8 @@ namespace VExam.Services.Answers
 {
     public class AnswerService : IAnswerService
     {
-     public CrudService<AnswersByInterviewees> CrudService { get; set; } = new CrudService<AnswersByInterviewees>();
-         public async Task<int> SaveAnswerAsync(AnswersViewModel model)
+        public CrudService<AnswersByInterviewees> CrudService { get; set; } = new CrudService<AnswersByInterviewees>();
+        public async Task<int> SaveAnswerAsync(AnswersViewModel model)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
@@ -25,22 +25,22 @@ namespace VExam.Services.Answers
                     {
                         try
                         {
-                            var result =0;
+                            var result = 0;
                             foreach (var item in model.Answer)
                             {
-                                string optionQuery = "INSERT INTO dbo.AnswersByInterviewees VALUES"+
+                                string optionQuery = "INSERT INTO dbo.AnswersByInterviewees VALUES" +
                                 " (@IntervieweeId, @SetQuestionId,@subjectiveAnswer,@ObjectiveAnswer,@AnsweredBy,@AuditTs,@Deleted)";
-                               result= await db.ExecuteAsync(optionQuery,
-                                new
-                                {
-                                    IntervieweeId      =item.IntervieweeId,
-                                    SetQuestionId      = item.SetQuestionId,						
-                                    subjectiveAnswer   = item.subjectiveAnswer,				
-                                    ObjectiveAnswer	   = item.ObjectiveAnswer,				
-                                    AnsweredBy	       =item.AnsweredBy,					
-                                    AuditTs		       =DateTimeOffset.Now,		 				
-                                    Deleted	           =0						
-                                }, tran);
+                                result = await db.ExecuteAsync(optionQuery,
+                                 new
+                                 {
+                                     IntervieweeId = item.IntervieweeId,
+                                     SetQuestionId = item.SetQuestionId,
+                                     subjectiveAnswer = item.subjectiveAnswer,
+                                     ObjectiveAnswer = item.ObjectiveAnswer,
+                                     AnsweredBy = item.AnsweredBy,
+                                     AuditTs = DateTimeOffset.Now,
+                                     Deleted = 0
+                                 }, tran);
                             }
                             tran.Commit();
                             return result;
@@ -57,6 +57,9 @@ namespace VExam.Services.Answers
                 }
             }
         }
+        // public async Task<QuestionViewModel> FilterAnswerAsync(int questionType){
+
+        // }
 
     }
 }

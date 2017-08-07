@@ -11,11 +11,11 @@ namespace VPortal.TokenManager
 {
     public class TokenProviderMiddleware
     {
-          private readonly RequestDelegate _next;
-         private readonly TokenProviderOptions _options;
-         private readonly JsonSerializerSettings _serializerSettings;
+        private readonly RequestDelegate _next;
+        private readonly TokenProviderOptions _options;
+        private readonly JsonSerializerSettings _serializerSettings;
 
-        public TokenProviderMiddleware(RequestDelegate next,IOptions<TokenProviderOptions> options)
+        public TokenProviderMiddleware(RequestDelegate next, IOptions<TokenProviderOptions> options)
         {
             _next = next;
 
@@ -30,13 +30,13 @@ namespace VPortal.TokenManager
 
         public Task Invoke(HttpContext context)
         {
-          
+
             if (!context.Request.Path.Equals(_options.Path, StringComparison.Ordinal))
             {
                 return _next(context);
             }
 
-           
+
             if (!context.Request.Method.Equals("POST")
                || !context.Request.HasFormContentType)
             {
@@ -52,7 +52,7 @@ namespace VPortal.TokenManager
         {
             var emailaddress = context.Request.Form["emailaddress"];
             var contactnumber = context.Request.Form["contactnumber"];
-        
+
             var identity = await _options.IdentityResolver(emailaddress, contactnumber);
             if (identity == null)
             {
@@ -63,7 +63,7 @@ namespace VPortal.TokenManager
 
             var now = DateTime.UtcNow;
 
-          
+
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, emailaddress),

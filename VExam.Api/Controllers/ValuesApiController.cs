@@ -31,8 +31,8 @@ namespace VExam.Api.Controllers
         public IEnumerable<string> Get()
         {
          //    PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-            // bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
-            // UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
+         // bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
+         // UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
             
             
             return new string[] { "value1", "value2" };

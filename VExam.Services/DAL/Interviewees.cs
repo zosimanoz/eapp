@@ -45,17 +45,16 @@ namespace VExam.Services.DAL
                 var dbfactory = DbFactoryProvider.GetFactory();
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
-
-                    string questionQuery = "SELECT * FROM dbo.InterviewSessionCandidate_view" +
-                                            "WHERE EmailAddress = @emailaddress" +
-                                            "AND ContactNumber = @ContactNumber";
+                    string questionQuery = "SELECT * FROM dbo.InterviewSessionCandidate_view " +
+                                            "WHERE EmailAddress = @emailaddress " +
+                                            "AND ContactNumber = @contactNumber";
                     var result = await db.GetAsync<Interviewee>(questionQuery,
                     new
                     {
                         emailaddress = emailaddress,
-                        ContactNumber = contactnumber
+                        contactNumber = contactnumber
                     });
-
+                  
                     return result;
                 }
             }

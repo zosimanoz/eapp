@@ -25,6 +25,7 @@ using VExam.Services.QuestionComplexities;
 using VExam.Services.QuestionTypes;
 using VExam.Services.QuestionsforSets;
 using VExam.Services.SessionwiseJobs;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace VExam.Api
 {
@@ -153,7 +154,12 @@ namespace VExam.Api
             if (result)
             {
                 var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress, contactnumber).Result;
-                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailaddress, "EmailAddress"), new Claim[] {
+                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailaddress, "EmailAddress"),
+                new Claim[] {
+                    new Claim("EmailAddress",intervieweeDetail.EmailAddress),
+                    new Claim("IntervieweeId",intervieweeDetail.IntervieweeId.ToString()),
+                    new Claim("InterviewSessionId",intervieweeDetail.InterviewSessionId.ToString()),
+                    new Claim("JobTitleId",intervieweeDetail.JobTitleId.ToString())
                  }));
             }
 

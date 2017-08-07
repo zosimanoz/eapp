@@ -6,5 +6,6 @@ namespace VExam.DTO.ViewModel
     {
         public QuestionBanks Question { get; set; }
         public IEnumerable<ObjectiveQuestionOption> Options { get; set; }
+        public AnswersByInterviewees Answers { get; set; }
     }
 }
