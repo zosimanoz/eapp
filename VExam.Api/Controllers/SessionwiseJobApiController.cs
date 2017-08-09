@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
 using VExam.Services.SessionwiseJobs;
@@ -9,6 +10,8 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
 
+ [AllowAnonymous]
+ [Route("api/v1/sessionwisejob")]
     public class SessionwiseJobApiController : BaseApiController
     {
         private ISessionwiseJobsService _sessionwiseJobsService;
@@ -21,7 +24,6 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-        //  [Authorize]
         [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] SessionwiseJob model)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO.ViewModel;
 using VExam.Services.Answers;
@@ -9,6 +10,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/answer")]
+     [AllowAnonymous]
     public class AnswerApiController:BaseApiController
     {
          private IAnswerService _answerService;

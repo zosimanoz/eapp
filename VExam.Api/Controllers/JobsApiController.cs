@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
 using VExam.Services.JobTitle;
@@ -9,6 +10,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/jobs")]
+     [AllowAnonymous]
     public class JobsApiController : BaseApiController
 
     {

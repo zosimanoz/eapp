@@ -9,7 +9,7 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-      [AllowAnonymous]
+    [AllowAnonymous]
     [Route("api/v1/user")]
     public class UserApiController : BaseApiController
     {
@@ -88,36 +88,5 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-
-        [HttpPost]
-        //  By HR only
-        [Route("login")]
-        public async Task<ApiResponse> LoginAsync(string emailAddress, string password)
-        {
-            try
-            {
-                string savedPassword = await _userService.GetUserPasswordAsync(emailAddress);
-                Console.WriteLine(savedPassword);
-                Console.WriteLine(emailAddress);
-                Console.WriteLine(password);
-                bool IsPasswordValid = PasswordManager.ValidateBcrypt(emailAddress, password, savedPassword);
-                if (IsPasswordValid)
-                {
-
-
-                    return HttpResponse(200, "Logged in successfully");
-                }
-                else
-                {
-                    return HttpResponse(500, "Invalid Email or Password");
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
-            }
-        }
-
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
 using VExam.Services.ExamSetService;
@@ -9,6 +10,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/examset")]
+     [AllowAnonymous]
     public class ExamSetsApiController : BaseApiController
     {
         private IExamSetService _examSetService;

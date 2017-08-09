@@ -10,12 +10,16 @@ using VExam.DTO.ViewModel;
 using VPortal.Core.Data;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System.Security.Claims;
 
 namespace VExam.Api.Controllers
 {
 
     [Route("api/v1/questionbank")]
-
+   // [Authorize(Policy="Admin")]
+ [AllowAnonymous]
     public class QuestionApiController : BaseApiController
     {
 
@@ -34,6 +38,7 @@ namespace VExam.Api.Controllers
         [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] QuestionViewModel model)
         {
+           Console.WriteLine(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
             try
             {
                 var result = await _questionService.AddQuestionAsync(model);

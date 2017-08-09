@@ -11,6 +11,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/department")]
+     [AllowAnonymous]
     public class DepartmentApiController : BaseApiController
 
     {

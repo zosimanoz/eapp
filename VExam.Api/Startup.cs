@@ -85,10 +85,10 @@ namespace VExam.Api
                     options.AddPolicy("User",
                     policy =>
                     {
-                        policy.RequireClaim(ClaimTypes.Actor, "User");
+                        policy.RequireClaim("UserId");
                     });
                 });
-
+           
             services.AddMvcCore().AddJsonFormatters();
             services.AddCors();
 
@@ -102,7 +102,7 @@ namespace VExam.Api
             services.AddTransient<IQuestionTypeService, QuestionTypeService>();
             services.AddTransient<IQuestionsforSetService, QuestionsforSetService>();
             services.AddTransient<ISessionwiseJobsService, SessionwiseJobsService>();
-            services.AddTransient<IUserService,UserService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,7 +136,7 @@ namespace VExam.Api
             };
             var userTokenProvider = new TokenProviderOptions
             {
-                Path = "/api/v1/user/token",
+                Path = "/api/v1/token/user",
                 Audience = audience,
                 Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256),
@@ -184,13 +184,15 @@ namespace VExam.Api
         private Task<ClaimsIdentity> GetIdentity(string emailaddress, string contactnumber)
         {
             Console.WriteLine("interviewee identity called");
+            Console.WriteLine(emailaddress);
+            Console.WriteLine(contactnumber);
             var result = Interviewees.IntervieweeValidationAsync(emailaddress, contactnumber).Result;
             if (result)
             {
                 var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress, contactnumber).Result;
-                return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailaddress, "EmailAddress"),
+                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(emailaddress, "EmailAddress"),
                 new Claim[] {
-                    new Claim("EmailAddress",intervieweeDetail.EmailAddress),
+                    new Claim(ClaimTypes.Email,intervieweeDetail.EmailAddress),
                     new Claim("IntervieweeId",intervieweeDetail.IntervieweeId.ToString()),
                     new Claim("InterviewSessionId",intervieweeDetail.InterviewSessionId.ToString()),
                     new Claim("JobTitleId",intervieweeDetail.JobTitleId.ToString()),
@@ -205,20 +207,23 @@ namespace VExam.Api
         {
 
             Console.WriteLine("user identity called");
-
             string savedPassword = Users.GetUserPasswordAsync(emailAddress).Result;
+            Console.WriteLine(savedPassword);
+            Console.WriteLine(emailAddress);
+            Console.WriteLine(password);
+
             bool IsPasswordValid = PasswordManager.ValidateBcrypt(emailAddress, password, savedPassword);
             if (IsPasswordValid)
             {
-            var userDetails = Users.GetUserDetailAsync(emailAddress).Result;
-             return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailAddress, "EmailAddress"),
-               new Claim[] {
+                var userDetails = Users.GetUserDetailAsync(emailAddress).Result;
+                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(emailAddress, "EmailAddress"),
+                  new Claim[] {
                     new Claim(ClaimTypes.Email,emailAddress),
                     new Claim(ClaimTypes.Role,userDetails.RoleId),
                     new Claim("Department",userDetails.DepartmentId.ToString()),
                     new Claim("UserId",userDetails.UserId.ToString()),
                     new Claim(ClaimTypes.Actor,"User")
-                }));
+                   }));
 
             }
             //  Account doesn't exists

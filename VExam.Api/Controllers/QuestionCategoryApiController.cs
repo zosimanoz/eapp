@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
 using VExam.Services.QuestionCategories;
@@ -9,6 +10,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
      [Route("api/v1/qustion/category")]
+      [AllowAnonymous]
     public class QuestionCategoryApiController : BaseApiController
     {
         
