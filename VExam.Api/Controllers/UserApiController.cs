@@ -58,7 +58,7 @@ namespace VExam.Api.Controllers
                 {
                     model.NewPassword = PasswordManager.GetHashedPassword(model.EmailAddress, model.NewPassword);
                     var result = await _userService.UpdatePasswordAsync(model);
-                    return HttpResponse(500, "", result);
+                    return HttpResponse(200, "", result);
                 }
                 catch (Exception e)
                 {
@@ -73,14 +73,14 @@ namespace VExam.Api.Controllers
         }
         [HttpPost]
         //  By HR only
-        [Route("changepassword")]
+        [Route("resetpassword")]
         public async Task<ApiResponse> ResetPasswordAsync(string emailAddress, string Password)
         {
             try
             {
                 string hashedPassword = PasswordManager.GetHashedPassword(emailAddress, Password);
                 var result = await _userService.ResetPasswordAsync(emailAddress, hashedPassword);
-                return HttpResponse(500, "", result);
+                return HttpResponse(200, "", result);
             }
             catch (Exception e)
             {

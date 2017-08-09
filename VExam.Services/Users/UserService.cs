@@ -52,7 +52,7 @@ namespace VExam.Services.Users
                     db.Open();
                     string questionQuery = "UPDATE dbo.Users SET " +
                     "Password = @Password," +
-                    "PasswordChanged = @PasswordChanged" +
+                    "PasswordChanged = @PasswordChanged " +
                     "WHERE EmailAddress = @EmailAddress";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
@@ -109,7 +109,7 @@ namespace VExam.Services.Users
                     db.Open();
                     string questionQuery = "UPDATE dbo.Users SET " +
                     "Password = @Password," +
-                    "PasswordChanged = @PasswordChanged" +
+                    "PasswordChanged = @PasswordChanged " +
                     "WHERE EmailAddress = @EmailAddress";
                     var result = await db.ExecuteAsync(questionQuery,
                             new

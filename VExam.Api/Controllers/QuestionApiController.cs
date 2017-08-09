@@ -38,7 +38,7 @@ namespace VExam.Api.Controllers
         [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] QuestionViewModel model)
         {
-           Console.WriteLine(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
+          
             try
             {
                 var result = await _questionService.AddQuestionAsync(model);

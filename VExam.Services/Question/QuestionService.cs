@@ -11,6 +11,7 @@ using VExam.DTO;
 using VExam.DTO.ViewModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VExam.Services.Question
 {
@@ -18,7 +19,7 @@ namespace VExam.Services.Question
     {
         public CrudService<QuestionBanks> CrudService { get; set; } = new CrudService<QuestionBanks>();
         public CrudService<ObjectiveQuestionOption> ObjectiveOptionCrudService { get; set; } = new CrudService<ObjectiveQuestionOption>();
-        public async Task<int> AddQuestionAsync(QuestionViewModel model)
+        public async Task<long> AddQuestionAsync(QuestionViewModel model)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
@@ -31,13 +32,14 @@ namespace VExam.Services.Question
                         try
                         {
                             string questionQuery = "INSERT INTO dbo.QuestionBank VALUES (@QuestionTypeId, @QuestionCategoryId," +
-                            "@JobTitleId,@Question,@Attachment,@QuestionComplexityId,@Marks,@PreparedBy,@AuditTs,@Deleted)";
-                            var result = await db.ExecuteAsync(questionQuery,
+                            "@JobTitleId,@Question,@Attachment,@QuestionComplexityId,@Marks,@PreparedBy,@AuditTs,@Deleted);"+
+                            "SELECT CAST(SCOPE_IDENTITY() as bigint)";
+                            var result = (await db.QueryAsync<long>(questionQuery,
                             new
                             {
                                 QuestionTypeId = model.Question.QuestionTypeId,
                                 QuestionCategoryId = model.Question.QuestionCategoryId,
-                                JobTitleId = model.Question.QuestionTypeId,
+                                JobTitleId = model.Question.JobTitleId,
                                 Question = model.Question.Question,
                                 Attachment = model.Question.Attachment,
                                 QuestionComplexityId = model.Question.QuestionComplexityId,
@@ -45,12 +47,14 @@ namespace VExam.Services.Question
                                 PreparedBy = model.Question.PreParedBy,
                                 AuditTs = DateTime.Now,
                                 Deleted = 0
-                            }, tran, null);
+                            }, tran, null)).FirstOrDefault();
+                            Console.WriteLine(result);
                             if (result > 0)
                             {
                                 foreach (var item in model.Options)
                                 {
                                     item.QuestionId = result;
+                                    Console.WriteLine(item.AnswerOption);
                                     string optionQuery = "INSERT INTO dbo.ObjectiveQuestionOptions VALUES (@QuestionId, @AnswerOption," +
                                     "@Attachment,@IsAnswer,@Deleted)";
                                     await db.ExecuteAsync(optionQuery,
@@ -115,10 +119,10 @@ namespace VExam.Services.Question
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
                    string questionQuery = "SELECT * FROM dbo.QuestionBankView WHERE " +
-                                            "(@QuestionTypeId IS NULL OR QuestionTypeId = @QuestionTypeId)" +
-                                            "AND (@QuestionCategoryId IS NULL OR QuestionCategoryId = @QuestionCategoryId)"+
-                                            "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId)"+
-                                            "AND (@QuestionComplexityId IS NULL OR QuestionComplexityId = @QuestionComplexityId)"+
+                                            "(@QuestionTypeId IS NULL OR QuestionTypeId = @QuestionTypeId) " +
+                                            "AND (@QuestionCategoryId IS NULL OR QuestionCategoryId = @QuestionCategoryId) "+
+                                            "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) "+
+                                            "AND (@QuestionComplexityId IS NULL OR QuestionComplexityId = @QuestionComplexityId) "+
                                              "AND (Question LIKE @Question)";
                     var result = await db.QueryAsync<QuestionBanks>(questionQuery,
                     new

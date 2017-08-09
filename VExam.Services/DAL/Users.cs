@@ -1,6 +1,8 @@
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using VExam.DTO;
 using VPortal.Core.Data;
 using VPortal.Core.Data.Crud;
@@ -20,12 +22,12 @@ namespace VExam.Services.DAL
                     db.Open();
                     string questionQuery = "SELECT password FROM dbo.Users " +
                     "WHERE EmailAddress = @EmailAddress";
-                    var result = await db.GetAsync<string>(questionQuery,
+                    var result = await db.QueryAsync<string>(questionQuery,
                             new
                             {
                                 EmailAddress = emailAddress
                             });
-                    return result;
+                    return result.FirstOrDefault();
 
                 }
                 catch (Exception)

@@ -10,11 +10,11 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-     [Route("api/v1/qustion/complexity")]
-      [AllowAnonymous]
+    [Route("api/v1/qustion/complexity")]
+    [AllowAnonymous]
     public class QuestionComplexityApiController : BaseApiController
     {
-        
+
         private IQuestionComplexityService _questionComplexityService;
         private ILogger _logger;
 
@@ -25,9 +25,8 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-      //  [Authorize]
         [Route("new")]
-        public async Task<ApiResponse> PostAsync([FromBody] QuestionCategory model)
+        public async Task<ApiResponse> PostAsync([FromBody] QuestionComplexity model)
         {
             try
             {
@@ -41,13 +40,63 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
-      //  [Authorize]
         [Route("get/all")]
         public async Task<ApiResponse> GetAllAsync()
         {
             try
             {
-                var result = await _questionComplexityService.CrudService.GetListAsync();
+                string whereCondition = " where deleted = @delete";
+                var result = await _questionComplexityService.CrudService.GetListAsync(whereCondition,
+                new
+                {
+                    delete = 0
+                });
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<ApiResponse> UpdateAsync([FromBody] QuestionComplexity model)
+        {
+            try
+            {
+                var result = await _questionComplexityService.CrudService.UpdateAsync(model);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpGet]
+        [Route("get/{questionComplexityId}")]
+        public async Task<ApiResponse> GetById(int questionComplexityId)
+        {
+            try
+            {
+                var result = await _questionComplexityService.CrudService.GetAsync(questionComplexityId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpPut]
+        [Route("delete/{questionComplexityId}")]
+        public async Task<ApiResponse> DeleteAsync(int questionComplexityId)
+        {
+            try
+            {
+                var result = await _questionComplexityService.DeleteAsync(questionComplexityId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

@@ -82,7 +82,28 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                var result = await _departmentService.CrudService.GetListAsync();
+                string whereCondition=" where deleted = @delete";
+                var result = await _departmentService.CrudService.GetListAsync(whereCondition,
+                new {
+                    delete=0
+                });
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpPost]
+        //  [Authorize]
+        [Route("delete/{departmentId}")]
+        public async Task<ApiResponse> DeleteAsync(int departmentId)
+        {
+            try
+            {
+                var result = await _departmentService.DeleteAsync(departmentId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
