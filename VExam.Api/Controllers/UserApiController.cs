@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
 using VExam.Services.Users;
@@ -8,6 +9,7 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
+      [AllowAnonymous]
     [Route("api/v1/user")]
     public class UserApiController : BaseApiController
     {
@@ -22,7 +24,7 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-        //  [Authorize]
+         [AllowAnonymous]
         [Route("register")]
         public async Task<ApiResponse> RegisterAsync([FromBody] User model)
         {
@@ -95,6 +97,9 @@ namespace VExam.Api.Controllers
             try
             {
                 string savedPassword = await _userService.GetUserPasswordAsync(emailAddress);
+                Console.WriteLine(savedPassword);
+                Console.WriteLine(emailAddress);
+                Console.WriteLine(password);
                 bool IsPasswordValid = PasswordManager.ValidateBcrypt(emailAddress, password, savedPassword);
                 if (IsPasswordValid)
                 {

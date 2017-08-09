@@ -7,6 +7,7 @@ using VExam.Services.Departments;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
 
+
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/department")]
@@ -29,13 +30,28 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                if(model.DepartmentId == 0){
-                    var result = await _departmentService.CrudService.InsertAsync(model);
-                    return HttpResponse(200, "", result.Value);
-                }else {
-                    var result = await _departmentService.CrudService.UpdateAsync(model);
-                    return HttpResponse(200, "", result);
-                }
+                var result = await _departmentService.CrudService.InsertAsync(model);
+                return HttpResponse(200, "", result.Value);
+             
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, model.DepartmentCode);
+            }
+        }
+
+
+           [HttpPost]
+        //  [Authorize]
+        [Route("update")]
+        public async Task<ApiResponse> UpdateAsync([FromBody] Department model)
+        {
+            try
+            {
+                var result = await _departmentService.CrudService.UpdateAsync(model);
+                return HttpResponse(200, "", result);
+             
             }
             catch (Exception e)
             {
