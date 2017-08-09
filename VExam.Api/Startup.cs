@@ -26,6 +26,9 @@ using VExam.Services.QuestionTypes;
 using VExam.Services.QuestionsforSets;
 using VExam.Services.SessionwiseJobs;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using VExam.Services.Users;
 
 namespace VExam.Api
 {
@@ -64,6 +67,27 @@ namespace VExam.Api
                 options.Cookies.ApplicationCookie.AutomaticChallenge = true;
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "Bearer";
             });
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+            services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("Interviewee",
+                    policy =>
+                    {
+                        policy.RequireClaim(ClaimTypes.Actor, "Interviewee");
+                    });
+
+                    options.AddPolicy("User",
+                    policy =>
+                    {
+                        policy.RequireClaim(ClaimTypes.Actor, "User");
+                    });
+                });
 
             services.AddMvcCore().AddJsonFormatters();
             services.AddCors();
@@ -78,6 +102,7 @@ namespace VExam.Api
             services.AddTransient<IQuestionTypeService, QuestionTypeService>();
             services.AddTransient<IQuestionsforSetService, QuestionsforSetService>();
             services.AddTransient<ISessionwiseJobsService, SessionwiseJobsService>();
+            services.AddTransient<IUserService,UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,11 +123,9 @@ namespace VExam.Api
         }
         public void Register(IApplicationBuilder app)
         {
-
             string issuer = Configuration.GetSection("TokenAuthentication:Issuer").Value;
             string audience = Configuration.GetSection("TokenAuthentication:Audience").Value;
             var secret = Encoding.UTF8.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value);
-
             var tokenProviderOptions = new TokenProviderOptions
             {
                 Path = Configuration.GetSection("TokenAuthentication:TokenPath").Value,
@@ -110,6 +133,14 @@ namespace VExam.Api
                 Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256),
                 IdentityResolver = GetIdentity
+            };
+            var userTokenProvider = new TokenProviderOptions
+            {
+                Path = "/api/v1/user/token",
+                Audience = audience,
+                Issuer = issuer,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256),
+                IdentityResolver = GetUserIdentity
             };
             app.UseJwtBearerAuthentication(new JwtBearerOptions()
             {
@@ -144,12 +175,15 @@ namespace VExam.Api
 
                     })
             });
+
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(tokenProviderOptions));
+            app.UseMiddleware<TokenProviderMiddleware>(Options.Create(userTokenProvider));
             // app.UseIdentity();
         }
 
         private Task<ClaimsIdentity> GetIdentity(string emailaddress, string contactnumber)
         {
+            Console.WriteLine("interviewee identity called");
             var result = Interviewees.IntervieweeValidationAsync(emailaddress, contactnumber).Result;
             if (result)
             {
@@ -159,11 +193,35 @@ namespace VExam.Api
                     new Claim("EmailAddress",intervieweeDetail.EmailAddress),
                     new Claim("IntervieweeId",intervieweeDetail.IntervieweeId.ToString()),
                     new Claim("InterviewSessionId",intervieweeDetail.InterviewSessionId.ToString()),
-                    new Claim("JobTitleId",intervieweeDetail.JobTitleId.ToString())
+                    new Claim("JobTitleId",intervieweeDetail.JobTitleId.ToString()),
+                    new Claim(ClaimTypes.Actor,"Interviewee")
                  }));
             }
 
             // Account doesn't exists
+            return Task.FromResult<ClaimsIdentity>(null);
+        }
+        private Task<ClaimsIdentity> GetUserIdentity(string emailAddress, string password)
+        {
+
+            Console.WriteLine("user identity called");
+
+            string savedPassword = Users.GetUserPasswordAsync(emailAddress).Result;
+            bool IsPasswordValid = PasswordManager.ValidateBcrypt(emailAddress, password, savedPassword);
+            if (IsPasswordValid)
+            {
+            var userDetails = Users.GetUserDetailAsync(emailAddress).Result;
+             return Task.FromResult(new ClaimsIdentity(new GenericIdentity(emailAddress, "EmailAddress"),
+               new Claim[] {
+                    new Claim(ClaimTypes.Email,emailAddress),
+                    new Claim(ClaimTypes.Role,userDetails.RoleId),
+                    new Claim("Department",userDetails.DepartmentId.ToString()),
+                    new Claim("UserId",userDetails.UserId.ToString()),
+                    new Claim(ClaimTypes.Actor,"User")
+                }));
+
+            }
+            //  Account doesn't exists
             return Task.FromResult<ClaimsIdentity>(null);
         }
     }

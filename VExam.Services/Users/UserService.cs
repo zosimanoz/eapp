@@ -9,6 +9,7 @@ using System.Text;
 using System;
 using VExam.DTO;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace VExam.Services.Users
 {
@@ -84,12 +85,12 @@ namespace VExam.Services.Users
                     db.Open();
                     string questionQuery = "SELECT password FROM dbo.Users " +
                     "WHERE EmailAddress = @EmailAddress";
-                    var result = await db.GetAsync<string>(questionQuery,
+                    var result = await db.QueryAsync<string>(questionQuery,
                             new
                             {
                                 EmailAddress = emailAddress
                             });
-                    return result;
+                    return result.FirstOrDefault();
 
                 }
                 catch (Exception)

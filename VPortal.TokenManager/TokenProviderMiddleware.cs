@@ -48,12 +48,14 @@ namespace VPortal.TokenManager
             return GenerateToken(context);
         }
 
+        
+
         private async Task GenerateToken(HttpContext context)
         {
             var emailaddress = context.Request.Form["emailaddress"];
-            var contactnumber = context.Request.Form["contactnumber"];
+            var password = context.Request.Form["password"];
 
-            var identity = await _options.IdentityResolver(emailaddress, contactnumber);
+            var identity = await _options.IdentityResolver(emailaddress, password);
             if (identity == null)
             {
                 context.Response.StatusCode = 400;

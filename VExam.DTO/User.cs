@@ -2,8 +2,10 @@ using VPortal.Core.Data.Crud.Attributes;
 
 namespace VExam.DTO
 {
+    [Table("Users")]
     public class User
     {
+        [Key]
         public long UserId { get; set; }
         public string RoleId { get; set; }
         public string EmailAddress { get; set; }
