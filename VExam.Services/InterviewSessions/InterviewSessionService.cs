@@ -1,6 +1,5 @@
 using VPortal.Core.Data.Crud.Attributes;
 using VPortal.Core.Data.Crud;
-
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;

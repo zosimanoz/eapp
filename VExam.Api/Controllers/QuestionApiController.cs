@@ -117,7 +117,7 @@ namespace VExam.Api.Controllers
         [Route("search")]
         public async Task<ApiResponse> SearchQuestionBankAsync([FromBody] QuestionSearch model)
         {
-            Console.WriteLine(model.QuestionTypeId);
+          
             try
             {
                 var result = await _questionService.SearchQuestionAsync(model);
@@ -133,7 +133,7 @@ namespace VExam.Api.Controllers
         [HttpGet]
         //  [Authorize]
         [Route("select")]
-        public async Task<ApiResponse> SelectQuestionBankViewAsync()
+        public async Task<ApiResponse> SelectQuestionBankAsync()
         {
            try
             {

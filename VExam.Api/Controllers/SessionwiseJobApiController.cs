@@ -29,6 +29,7 @@ namespace VExam.Api.Controllers
         {
             try
             {
+                model.AuditTs= DateTime.Now;
                 if (model.SessionwiseJobId == 0)
                 {
                     var result = await _sessionwiseJobsService.CrudService.InsertAsync(model);

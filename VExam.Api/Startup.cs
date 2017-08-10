@@ -133,7 +133,7 @@ namespace VExam.Api
             var secret = Encoding.UTF8.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value);
             var tokenProviderOptions = new TokenProviderOptions
             {
-                Path = Configuration.GetSection("TokenAuthentication:TokenPath").Value,
+                Path = Configuration.GetSection("TokenAuthentication:IntervieweeTokenPath").Value,
                 Audience = audience,
                 Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256),
@@ -141,7 +141,7 @@ namespace VExam.Api
             };
             var userTokenProvider = new TokenProviderOptions
             {
-                Path = "/api/v1/token/user",
+                Path = Configuration.GetSection("TokenAuthentication:UserTokenPath").Value,
                 Audience = audience,
                 Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256),

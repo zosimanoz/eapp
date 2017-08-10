@@ -94,7 +94,7 @@ namespace VExam.Services.Interviewees
                     foreach (var item in result)
                     {
                         // can also check if the question type is subjective or objective;
-                        var optionsQuery = "SELECT * FROM dbo.ObjectiveQuestionOptions WHERE QuestionId = @QuestionId";
+                        var optionsQuery = "SELECT ObjectiveQuestionOptionId, QuestionId, AnswerOption, Attachment FROM dbo.ObjectiveQuestionOptions WHERE QuestionId = @QuestionId";
 
                         var options = await db.QueryAsync<ObjectiveQuestionOption>(optionsQuery, new
                         {
