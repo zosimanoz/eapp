@@ -20,7 +20,7 @@ FROM QuestionBank
 INNER JOIN QuestionTypes 
 ON QuestionTypes.QuestionTypeId = QuestionBank.QuestionTypeId
 INNER JOIN QuestionCategories
-ON QuestionCategories.QuestionCategoryId = QuestionCategories.QuestionCategoryId
+ON QuestionCategories.QuestionCategoryId = QuestionBank.QuestionCategoryId
 INNER JOIN JobTitles
 ON JobTitles.JobTitleId = QuestionBank.JobTitleId
 INNER JOIN QuestionComplexities
