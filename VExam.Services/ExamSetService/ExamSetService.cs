@@ -19,7 +19,7 @@ namespace VExam.Services.ExamSetService
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.ExamSets SET deleted = @delete WHERE ExamSetId = @ExamSetId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new

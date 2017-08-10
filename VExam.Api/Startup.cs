@@ -29,6 +29,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using VExam.Services.Users;
+using VExam.Services.ExamSetService;
+using VExam.Services.InterviewSessions;
 
 namespace VExam.Api
 {
@@ -103,6 +105,9 @@ namespace VExam.Api
             services.AddTransient<IQuestionsforSetService, QuestionsforSetService>();
             services.AddTransient<ISessionwiseJobsService, SessionwiseJobsService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IExamSetService, ExamSetService>();
+            services.AddTransient<IInterviewSessionService, InterviewSessionService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

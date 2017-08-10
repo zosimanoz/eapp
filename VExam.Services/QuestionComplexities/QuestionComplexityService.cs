@@ -22,7 +22,7 @@ namespace VExam.Services.QuestionComplexities
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.QuestionComplexities SET deleted = @delete WHERE QuestionComplexityId = @questionComplexityId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new

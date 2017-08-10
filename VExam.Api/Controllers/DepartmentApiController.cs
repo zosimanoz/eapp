@@ -96,7 +96,7 @@ namespace VExam.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         //  [Authorize]
         [Route("delete/{departmentId}")]
         public async Task<ApiResponse> DeleteAsync(int departmentId)

@@ -3,68 +3,55 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
-using VExam.DTO.ViewModel;
-using VExam.Services.QuestionsforSets;
+using VExam.Services.InterviewSessions;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    [Route("api/v1/examset/question")]
+    [Route("api/v1/interviewsession")]
      [AllowAnonymous]
-    public class QuestionsforSetController : BaseApiController
+    public class InterviewSessionApiController : BaseApiController
     {
-
-        private IQuestionsforSetService _questionService;
-
+        private IInterviewSessionService _interviewSessionService;
         private ILogger _logger;
 
-        public QuestionsforSetController(IQuestionsforSetService questionSetService, ILogger logger)
+        public InterviewSessionApiController(IInterviewSessionService interviewSessionService, ILogger logger)
         {
-            _questionService = questionSetService;
+            _interviewSessionService = interviewSessionService;
             _logger = logger;
         }
 
         [HttpPost]
-        [Route("add")]
-        public async Task<ApiResponse> AddQuestonsAsync([FromBody] SetQuestionViewModel model)
+        [Route("new")]
+        public async Task<ApiResponse> PostAsync([FromBody] InterviewSession model)
         {
             try
             {
-                var result = await _questionService.AddQuestionsAsync(model);
+                Console.WriteLine(model.SessionStartDate);
+                 Console.WriteLine(model.SessionEndDate);
+               //  model.SessionStartDate = DateTime.Parse(model.SessionStartDate.ToString("yyyy-MM-ddTHH:mm:ss.fff"));
+                var result = await _interviewSessionService.AddInterviewSessionAsync(model);
                 return HttpResponse(200, "", result);
+
             }
             catch (Exception e)
             {
                 _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
+                return HttpResponse(500,e.Message);
             }
         }
+
 
         [HttpPut]
         [Route("update")]
-        public async Task<ApiResponse> UpdateQuestonsAsync([FromBody] SetQuestion model)
+        public async Task<ApiResponse> UpdateAsync([FromBody] InterviewSession model)
         {
             try
             {
-                var result = await _questionService.CrudService.UpdateAsync(model);
+                var result = await _interviewSessionService.UpdateAsync(model);
                 return HttpResponse(200, "", result);
-            }
-            catch (Exception e)
-            {
-                _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
-            }
-        }
 
-        [HttpPut]
-        [Route("delete/{setQuestionId}")]
-        public async Task<ApiResponse> DeleteQuestionAsync(long setQuestionId)
-        {
-            try
-            {
-                var result = await _questionService.DeleteQuestionAsync(setQuestionId);
-                return HttpResponse(200, "", result);
             }
             catch (Exception e)
             {
@@ -73,12 +60,12 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
-        [Route("get/{questionSetId}")]
-        public async Task<ApiResponse> GetAllQuestionsBySetId(long questionSetId)
+        [Route("active")]
+        public async Task<ApiResponse> GetActiveSessionsAsync()
         {
             try
             {
-                var result = await _questionService.GetQuestionsBySetIdAsync(questionSetId);
+                var result = await _interviewSessionService.GetActiveInterviewSessions();
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
@@ -87,5 +74,21 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+        [HttpPut]
+        [Route("delete/{interviewSessionId}")]
+        public async Task<ApiResponse> DeleteAsync(long interviewSessionId)
+        {
+            try
+            {
+                var result = await _interviewSessionService.DeleteAsync(interviewSessionId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
     }
 }

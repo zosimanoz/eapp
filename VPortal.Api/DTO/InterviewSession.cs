@@ -15,7 +15,7 @@ namespace VPortal.Api.DTO
         public long CreatedBy { get; set; }
         public DateTimeOffset AuditTs { get; set; }
         public bool Deleted { get; set; }
-         [IgnoreAll]
+        [IgnoreAll]
         public int RowTotal {get; set;}
     }
 }

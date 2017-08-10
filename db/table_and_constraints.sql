@@ -102,6 +102,8 @@ CREATE TABLE dbo.ExamSets
 	ExamSetId								bigint IDENTITY PRIMARY KEY,
 	Title									national character varying(1000) NOT NULL,
 	JobTitleId								int REFERENCES JobTitles NOT NULL,
+	Description 							national character varying(max),
+	TotalMark 								decimal
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 

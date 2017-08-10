@@ -22,7 +22,7 @@ namespace VExam.Services.SessionwiseJobs
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.SessionwiseJobs SET deleted = @delete WHERE SessionwiseJobId = @SetQuestionId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new

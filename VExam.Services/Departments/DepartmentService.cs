@@ -23,7 +23,7 @@ namespace VExam.Services.Departments
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.Departments SET deleted = @delete WHERE DepartmentId = @departmentId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new

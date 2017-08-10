@@ -59,7 +59,7 @@ namespace VPortal.TokenManager
             if (identity == null)
             {
                 context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Invalid emailaddress or contactnumber.");
+                await context.Response.WriteAsync("Invalid emailaddress or password.");
                 return;
             }
 

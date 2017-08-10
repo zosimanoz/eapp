@@ -25,7 +25,7 @@ namespace VExam.Services.Interviewees
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.Interviewees SET deleted = @delete WHERE IntervieweeId = @intervieweeId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
@@ -52,7 +52,7 @@ namespace VExam.Services.Interviewees
                 var dbfactory = DbFactoryProvider.GetFactory();
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     var query = "SELECT * FROM dbo.InterviewSessionCandidate_view WHERE EmailAddress = @EmailAddress" +
                     "AND ContactNumber = @ContactNumber";
 

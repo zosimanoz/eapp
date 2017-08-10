@@ -23,7 +23,7 @@ namespace VExam.Services.QuestionCategories
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.QuestionCategories SET deleted = @delete WHERE questionCategoryId = @questionCategoryId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new

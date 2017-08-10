@@ -20,7 +20,7 @@ namespace VExam.Services.Answers
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     using (IDbTransaction tran = db.BeginTransaction())
                     {
                         try

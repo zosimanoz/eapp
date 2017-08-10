@@ -23,7 +23,7 @@ namespace VExam.Services.Users
             {
                 try
                 {
-                    db.Open();
+                   await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.Users SET deleted = @delete WHERE UserId = @UserId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
@@ -49,7 +49,7 @@ namespace VExam.Services.Users
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.Users SET " +
                     "Password = @Password," +
                     "PasswordChanged = @PasswordChanged " +
@@ -82,7 +82,7 @@ namespace VExam.Services.Users
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "SELECT password FROM dbo.Users " +
                     "WHERE EmailAddress = @EmailAddress";
                     var result = await db.QueryAsync<string>(questionQuery,
@@ -106,7 +106,7 @@ namespace VExam.Services.Users
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.Users SET " +
                     "Password = @Password," +
                     "PasswordChanged = @PasswordChanged " +

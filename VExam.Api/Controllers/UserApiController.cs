@@ -24,7 +24,7 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-         [AllowAnonymous]
+        [AllowAnonymous]
         [Route("register")]
         public async Task<ApiResponse> RegisterAsync([FromBody] User model)
         {
@@ -80,6 +80,22 @@ namespace VExam.Api.Controllers
             {
                 string hashedPassword = PasswordManager.GetHashedPassword(emailAddress, Password);
                 var result = await _userService.ResetPasswordAsync(emailAddress, hashedPassword);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("delete/{userId}")]
+        public async Task<ApiResponse> DeleteAsync(long userId)
+        {
+            try
+            {
+                var result = await _userService.DeleteAsync(userId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
