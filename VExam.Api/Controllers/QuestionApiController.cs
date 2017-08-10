@@ -115,7 +115,7 @@ namespace VExam.Api.Controllers
         [HttpGet]
         //  [Authorize]
         [Route("search")]
-        public async Task<ApiResponse> SearchQuestionBankAsync([FromBody] QuestionSearch model)
+        public async Task<ApiResponse> SearchQuestionBankAsync(QuestionSearch model)
         {
 
             try
