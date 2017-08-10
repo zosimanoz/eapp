@@ -26,13 +26,13 @@ namespace VExam.Services.Question
             {
                 try
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     using (IDbTransaction tran = db.BeginTransaction())
                     {
                         try
                         {
                             string questionQuery = "INSERT INTO dbo.QuestionBank VALUES (@QuestionTypeId, @QuestionCategoryId," +
-                            "@JobTitleId,@Question,@Attachment,@QuestionComplexityId,@Marks,@PreparedBy,@AuditTs,@Deleted);"+
+                            "@JobTitleId,@Question,@Attachment,@QuestionComplexityId,@Marks,@PreparedBy,@AuditTs,@Deleted);" +
                             "SELECT CAST(SCOPE_IDENTITY() as bigint)";
                             var result = (await db.QueryAsync<long>(questionQuery,
                             new
@@ -92,8 +92,8 @@ namespace VExam.Services.Question
             {
                 try
                 {
-                    db.Open();
-                    string questionQuery = "UPDATE dbo.Questions SET deleted = @delete WHERE QuestionId = @QuestionId";
+                    await db.OpenAsync();
+                    string questionQuery = "UPDATE dbo.QuestionBank SET deleted = @delete WHERE QuestionId = @QuestionId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
                             {
@@ -118,20 +118,21 @@ namespace VExam.Services.Question
                 var dbfactory = DbFactoryProvider.GetFactory();
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
-                   string questionQuery = "SELECT * FROM dbo.QuestionBankView WHERE " +
-                                            "(@QuestionTypeId IS NULL OR QuestionTypeId = @QuestionTypeId) " +
-                                            "AND (@QuestionCategoryId IS NULL OR QuestionCategoryId = @QuestionCategoryId) "+
-                                            "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) "+
-                                            "AND (@QuestionComplexityId IS NULL OR QuestionComplexityId = @QuestionComplexityId) "+
+                    await db.OpenAsync();
+                    string questionQuery = "SELECT * FROM dbo.QuestionBankView WHERE " +
+                                             "(@QuestionTypeId IS NULL OR QuestionTypeId = @QuestionTypeId) " +
+                                             "AND (@QuestionCategoryId IS NULL OR QuestionCategoryId = @QuestionCategoryId) " +
+                                             "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) " +
+                                             "AND (@QuestionComplexityId IS NULL OR QuestionComplexityId = @QuestionComplexityId) " +
                                              "AND (Question LIKE @Question)";
                     var result = await db.QueryAsync<QuestionBanks>(questionQuery,
                     new
                     {
-                     QuestionTypeId = model.QuestionTypeId ==0?(int?)null: (int?)model.QuestionTypeId,
-                     QuestionCategoryId = model.QuestionCategoryId ==0?(int?)null: (int?)model.QuestionCategoryId,  
-                     JobTitleId = model.JobTitleId ==0?(int?)null: (int?)model.JobTitleId  ,
-                     QuestionComplexityId = model.QuestionComplexityId ==0?(int?)null: (int?)model.QuestionComplexityId  ,
-                     Question = "%"+model.Question+"%"   
+                        QuestionTypeId = model.QuestionTypeId == 0 ? (int?)null : (int?)model.QuestionTypeId,
+                        QuestionCategoryId = model.QuestionCategoryId == 0 ? (int?)null : (int?)model.QuestionCategoryId,
+                        JobTitleId = model.JobTitleId == 0 ? (int?)null : (int?)model.JobTitleId,
+                        QuestionComplexityId = model.QuestionComplexityId == 0 ? (int?)null : (int?)model.QuestionComplexityId,
+                        Question = "%" + model.Question + "%"
                     });
                     Console.WriteLine(questionQuery);
 
@@ -144,14 +145,15 @@ namespace VExam.Services.Question
             }
         }
 
-         public async Task<IEnumerable<QuestionBanks>> SelectQuestionBankViewAsync()
+        public async Task<IEnumerable<QuestionBanks>> SelectQuestionBankViewAsync()
         {
             try
             {
                 var dbfactory = DbFactoryProvider.GetFactory();
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
-                   string questionQuery = "SELECT * FROM dbo.QuestionBankView";
+                    await db.OpenAsync();
+                    string questionQuery = "SELECT * FROM dbo.QuestionBankView";
                     var result = await db.QueryAsync<QuestionBanks>(questionQuery);
                     return result;
                 }
