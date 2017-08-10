@@ -84,7 +84,7 @@ namespace VExam.Api
                         policy.RequireClaim(ClaimTypes.Actor, "Interviewee");
                     });
 
-                    options.AddPolicy("User",
+                    options.AddPolicy("Admin",
                     policy =>
                     {
                         policy.RequireClaim("UserId");

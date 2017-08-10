@@ -18,8 +18,8 @@ namespace VExam.Api.Controllers
 {
 
     [Route("api/v1/questionbank")]
-   // [Authorize(Policy="Admin")]
- [AllowAnonymous]
+   //[Authorize]
+    [AllowAnonymous]
     public class QuestionApiController : BaseApiController
     {
 
@@ -38,7 +38,7 @@ namespace VExam.Api.Controllers
         [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] QuestionViewModel model)
         {
-          
+
             try
             {
                 var result = await _questionService.AddQuestionAsync(model);
@@ -112,12 +112,12 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-        [HttpPost]
+        [HttpGet]
         //  [Authorize]
         [Route("search")]
         public async Task<ApiResponse> SearchQuestionBankAsync([FromBody] QuestionSearch model)
         {
-          
+
             try
             {
                 var result = await _questionService.SearchQuestionAsync(model);
@@ -135,7 +135,7 @@ namespace VExam.Api.Controllers
         [Route("select")]
         public async Task<ApiResponse> SelectQuestionBankAsync()
         {
-           try
+            try
             {
                 var result = await _questionService.SelectQuestionBankViewAsync();
                 return HttpResponse(200, "", result);
