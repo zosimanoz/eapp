@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using VExam.Services.Users;
 using VExam.Services.ExamSetService;
 using VExam.Services.InterviewSessions;
+using Microsoft.AspNetCore.Http;
 
 namespace VExam.Api
 {
@@ -69,31 +70,33 @@ namespace VExam.Api
                 options.Cookies.ApplicationCookie.AutomaticChallenge = true;
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "Bearer";
             });
+
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
-                                .RequireAuthenticatedUser()
-                                .Build();
+                            .RequireAuthenticatedUser()
+                            .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+            
             services.AddAuthorization(options =>
-                {
-                    options.AddPolicy("Interviewee",
+            {
+                options.AddPolicy("Interviewee",
                     policy =>
                     {
-                        policy.RequireClaim(ClaimTypes.Actor, "Interviewee");
+                        policy.RequireClaim(ClaimTypes.Actor,"Interviewee");
                     });
+                options.AddPolicy("Admin",
+               policy =>
+               {
+                   policy.RequireClaim(ClaimTypes.Actor,"User");
+               });
 
-                    options.AddPolicy("Admin",
-                    policy =>
-                    {
-                        policy.RequireClaim("UserId");
-                    });
-                });
-           
+            });
+
             services.AddMvcCore().AddJsonFormatters();
             services.AddCors();
-
+            // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //custom services...
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IJobTitleService, JobTitleService>();
@@ -107,7 +110,7 @@ namespace VExam.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IExamSetService, ExamSetService>();
             services.AddTransient<IInterviewSessionService, InterviewSessionService>();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -123,7 +126,6 @@ namespace VExam.Api
                     builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
             app.UseMvc();
-
 
         }
         public void Register(IApplicationBuilder app)
@@ -183,7 +185,8 @@ namespace VExam.Api
 
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(tokenProviderOptions));
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(userTokenProvider));
-            // app.UseIdentity();
+
+            
         }
 
         private Task<ClaimsIdentity> GetIdentity(string emailaddress, string contactnumber)
@@ -221,8 +224,8 @@ namespace VExam.Api
             if (IsPasswordValid)
             {
                 var userDetails = Users.GetUserDetailAsync(emailAddress).Result;
-                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(emailAddress, "EmailAddress"),
-                  new Claim[] {
+                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(userDetails.FirstName, "Name"),
+                   new Claim[] {
                     new Claim(ClaimTypes.Email,emailAddress),
                     new Claim(ClaimTypes.Role,userDetails.RoleId),
                     new Claim("Department",userDetails.DepartmentId.ToString()),
@@ -234,5 +237,7 @@ namespace VExam.Api
             //  Account doesn't exists
             return Task.FromResult<ClaimsIdentity>(null);
         }
+
+
     }
 }

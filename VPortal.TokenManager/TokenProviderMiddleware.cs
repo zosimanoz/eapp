@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.IdentityModel.Tokens;
 
 namespace VPortal.TokenManager
 {
@@ -48,7 +53,7 @@ namespace VPortal.TokenManager
             return GenerateToken(context);
         }
 
-        
+
 
         private async Task GenerateToken(HttpContext context)
         {
@@ -62,7 +67,6 @@ namespace VPortal.TokenManager
                 await context.Response.WriteAsync("Invalid emailaddress or password.");
                 return;
             }
-
             var now = DateTime.UtcNow;
 
 
@@ -72,12 +76,13 @@ namespace VPortal.TokenManager
                 new Claim(JwtRegisteredClaimNames.Jti, await _options.NonceGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUniversalTime().ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             };
+            identity.AddClaims(claims);
 
             // Create the JWT and write it to a string
             var jwt = new JwtSecurityToken(
                 issuer: _options.Issuer,
                 audience: _options.Audience,
-                claims: claims,
+                claims: identity.Claims,
                 notBefore: now,
                 expires: now.Add(_options.Expiration),
                 signingCredentials: _options.SigningCredentials);
@@ -88,7 +93,7 @@ namespace VPortal.TokenManager
                 access_token = encodedJwt,
                 expires_in = (int)_options.Expiration.TotalSeconds
             };
-
+        
             // Serialize and return the response
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(JsonConvert.SerializeObject(response, _serializerSettings));

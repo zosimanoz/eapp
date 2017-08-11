@@ -13,13 +13,16 @@ using VPortal.WebExtensions.API;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace VExam.Api.Controllers
 {
 
+     [Authorize(Policy = "Admin")]
     [Route("api/v1/questionbank")]
-   //[Authorize]
-    [AllowAnonymous]
+    //[Authorize]
+    //[AllowAnonymous]
     public class QuestionApiController : BaseApiController
     {
 
@@ -135,6 +138,14 @@ namespace VExam.Api.Controllers
         [Route("select")]
         public async Task<ApiResponse> SelectQuestionBankAsync()
         {
+   
+ var identity = (ClaimsIdentity)User.Identity;
+IEnumerable<Claim> claims = identity.Claims;
+foreach(var item in claims){
+    Console.WriteLine(item.Type);
+}
+            var myUser = HttpContext.User;
+            Console.WriteLine(myUser.Identity.IsAuthenticated);
             try
             {
                 var result = await _questionService.SelectQuestionBankViewAsync();
