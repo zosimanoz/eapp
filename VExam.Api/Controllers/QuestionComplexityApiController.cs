@@ -10,7 +10,7 @@ using VPortal.WebExtensions.API;
 
 namespace VExam.Api.Controllers
 {
-    [Route("api/v1/qustion/complexity")]
+    [Route("api/v1/question/complexity")]
     [AllowAnonymous]
     public class QuestionComplexityApiController : BaseApiController
     {
