@@ -9,7 +9,7 @@ SELECT
 	JobTitles.JobTitleId,
 	Interviewees.Address,
 	Interviewees.ContactNumber,
-	SUM(Results.MarksObtained) AS MarksObtained
+	SUM(ISNULL(Results.MarksObtained,0)) AS MarksObtained
 FROM Interviewees
 LEFT JOIN AnswersByInterviewees
 ON AnswersByInterviewees.IntervieweeId = Interviewees.IntervieweeId
