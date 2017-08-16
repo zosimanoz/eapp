@@ -138,7 +138,8 @@ namespace VExam.Services.InterviewSessions
                                              "AND (@InterviewSessionId IS NULL OR InterviewSessionId = @InterviewSessionId) " +
                                              "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) " +
                                              "AND (EmailAddress LIKE @EmailAddress) " +
-                                             "AND (IntervieweeName LIKE @IntervieweeName)";
+                                             "AND (IntervieweeName LIKE @IntervieweeName)" +
+                                             " ORDER BY MarksObtained DESC";
                     var result = await db.QueryAsync<ResultSummary>(questionQuery,
                     new
                     {
