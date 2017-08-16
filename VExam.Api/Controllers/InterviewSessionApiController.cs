@@ -90,5 +90,21 @@ namespace VExam.Api.Controllers
             }
         }
 
+         [HttpGet]
+        [Route("result/summary")]
+        public async Task<ApiResponse> ResultAsync(ResultSummary model)
+        {
+            try
+            {
+                var result = await _interviewSessionService.ResultSummaryAsync(model);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
     }
 }

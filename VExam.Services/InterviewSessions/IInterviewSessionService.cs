@@ -18,5 +18,6 @@ namespace VExam.Services.InterviewSessions
         Task<IEnumerable<InterviewSession>> GetActiveInterviewSessions();
         Task<int> AddInterviewSessionAsync(InterviewSession model);
         Task<int> UpdateAsync(InterviewSession model);
+        Task<IEnumerable<ResultSummary>> ResultSummaryAsync(ResultSummary model);
     }
 }

@@ -58,6 +58,7 @@ CREATE TABLE dbo.QuestionComplexities
 	QuestionComplexityId					int IDENTITY PRIMARY KEY,
 	ComplexityCode 							national character varying(50) NOT NULL,
 	ComplexityTitle 						national character varying(100) NOT NULL,
+	Marks									decimal,
 	Deleted									bit NOT NULL DEFAULT(0) 
 
 );
@@ -103,7 +104,7 @@ CREATE TABLE dbo.ExamSets
 	Title									national character varying(1000) NOT NULL,
 	JobTitleId								int REFERENCES JobTitles NOT NULL,
 	Description 							national character varying(max),
-	TotalMark 								decimal
+	TotalMark 								decimal,
 	CreatedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs 								DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 
@@ -209,7 +210,7 @@ CREATE TABLE dbo.Results
 (
 	ResultId								bigint PRIMARY KEY,
 	AnswerId 								bigint REFERENCES dbo.AnswersByInterviewees NOT NULL,
-	MarksObtained							decimal NOT NULL,
+	MarksObtained							decimal(5,2) NOT NULL,
 	Remarks									national character varying(500),
 	CheckedBy 								int REFERENCES dbo.CheckedBy NOT NULL,
 	ExaminerId								bigint REFERENCES dbo.users,

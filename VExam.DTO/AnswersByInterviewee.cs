@@ -14,6 +14,7 @@ namespace VExam.DTO
         public string ObjectiveAnswer { get; set; }
         public long AnsweredBy { get; set; }
         public DateTimeOffset AuditTs { get; set; }
+        public bool IsChecked { get; set; }
         public bool Deleted { get; set; }
     }
 }

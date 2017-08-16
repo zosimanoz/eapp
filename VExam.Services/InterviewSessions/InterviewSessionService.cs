@@ -79,12 +79,12 @@ namespace VExam.Services.InterviewSessions
                           Title = model.Title,
                           StartDate = model.SessionStartDate,
                           EndDate = model.SessionEndDate,
-                          JobTitleId=model.JobTitleId,
+                          JobTitleId = model.JobTitleId,
                           CreatedBy = model.CreatedBy,
                           AuditTs = DateTime.Now,
                           Deleted = 0
                       });
-                      return result;
+                    return result;
                 }
                 catch (Exception)
                 {
@@ -101,11 +101,11 @@ namespace VExam.Services.InterviewSessions
                 {
                     await db.OpenAsync();
                     string optionQuery = "UPDATE dbo.InterviewSessions SET " +
-                    "Title = @Title,"+
-                    "SessionStartDate = @StartDate,"+
-                    "SessionEndDate = @EndDate,"+
-                    "JobTitleId = @JobTitleId,"+
-                    "AuditTs = @AuditTs "+
+                    "Title = @Title," +
+                    "SessionStartDate = @StartDate," +
+                    "SessionEndDate = @EndDate," +
+                    "JobTitleId = @JobTitleId," +
+                    "AuditTs = @AuditTs " +
                     "WHERE InterviewSessionId = @IntervierwSessionId";
                     var result = await db.ExecuteAsync(optionQuery,
                       new
@@ -113,16 +113,49 @@ namespace VExam.Services.InterviewSessions
                           Title = model.Title,
                           StartDate = model.SessionStartDate,
                           EndDate = model.SessionEndDate,
-                          JobTitleId=model.JobTitleId,
+                          JobTitleId = model.JobTitleId,
                           AuditTs = DateTime.Now,
-                          IntervierwSessionId=model.InterviewSessionId
+                          IntervierwSessionId = model.InterviewSessionId
                       });
-                      return result;
+                    return result;
                 }
                 catch (Exception)
                 {
                     throw;
                 }
+            }
+        }
+        public async Task<IEnumerable<ResultSummary>> ResultSummaryAsync(ResultSummary model)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    string questionQuery = "SELECT * FROM dbo.InterviewResultSummaryView WHERE " +
+                                             "(@IntervieweeId IS NULL OR IntervieweeId = @IntervieweeId) " +
+                                             "AND (@InterviewSessionId IS NULL OR InterviewSessionId = @InterviewSessionId) " +
+                                             "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) " +
+                                             "AND (EmailAddress LIKE @EmailAddress) " +
+                                             "AND (IntervieweeName LIKE @IntervieweeName)";
+                    var result = await db.QueryAsync<ResultSummary>(questionQuery,
+                    new
+                    {
+                        IntervieweeId = model.IntervieweeId == 0 ? (int?)null : (int?)model.IntervieweeId,
+                        InterviewSessionId = model.InterviewSessionId == 0 ? (int?)null : (int?)model.InterviewSessionId,
+                        JobTitleId = model.JobTitleId == 0 ? (int?)null : (int?)model.JobTitleId,
+                        EmailAddress = "%" + model.EmailAddress +"%",
+                        IntervieweeName = "%" + model.IntervieweeName + "%"
+                    });
+                    Console.WriteLine(questionQuery);
+
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
