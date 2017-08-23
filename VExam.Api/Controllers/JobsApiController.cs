@@ -10,7 +10,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/jobs")]
-     [AllowAnonymous]
+    [AllowAnonymous]
     public class JobsApiController : BaseApiController
 
     {
@@ -24,7 +24,7 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPost]
-      //  [Authorize]
+        //  [Authorize]
         [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] JobTitles model)
         {
@@ -40,13 +40,65 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
-      //  [Authorize]
+        //  [Authorize]
         [Route("get/all")]
         public async Task<ApiResponse> GetAllAsync()
         {
             try
             {
-                var result = await _jobService.CrudService.GetListAsync();
+                string whereCondition = " where deleted = @delete";
+                var result = await _jobService.CrudService.GetListAsync(whereCondition,
+                new
+                {
+                    delete = 0
+                });
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<ApiResponse> UpdateAsync([FromBody] JobTitles model)
+        {
+            try
+            {
+                var result = await _jobService.CrudService.UpdateAsync(model);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpGet]
+        [Route("get/{jobTitleId}")]
+        public async Task<ApiResponse> GetById(int jobTitleId)
+        {
+            try
+            {
+                var result = await _jobService.CrudService.GetAsync(jobTitleId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpPut]
+        [Route("delete/{jobTitleId}")]
+        public async Task<ApiResponse> DeleteAsync(int jobTitleId)
+        {
+            try
+            {
+                var result = await _jobService.DeleteAsync(jobTitleId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

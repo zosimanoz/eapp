@@ -19,7 +19,7 @@ using System.Collections.Generic;
 namespace VExam.Api.Controllers
 {
 
-     [Authorize(Policy = "Admin")]
+    [Authorize(Policy = "Admin")]
     [Route("api/v1/questionbank")]
     //[Authorize]
     //[AllowAnonymous]
@@ -138,12 +138,13 @@ namespace VExam.Api.Controllers
         [Route("select")]
         public async Task<ApiResponse> SelectQuestionBankAsync()
         {
-   
- var identity = (ClaimsIdentity)User.Identity;
-IEnumerable<Claim> claims = identity.Claims;
-foreach(var item in claims){
-    Console.WriteLine(item.Type);
-}
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            foreach (var item in claims)
+            {
+                Console.WriteLine(item.Type);
+            }
             var myUser = HttpContext.User;
             Console.WriteLine(myUser.Identity.IsAuthenticated);
             try
