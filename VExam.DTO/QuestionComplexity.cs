@@ -9,6 +9,7 @@ namespace VExam.DTO
         public int QuestionComplexityId { get; set; }
         public string ComplexityCode { get; set; }
         public string ComplexityTitle { get; set; }
+        public decimal Marks { get; set; }
         public bool Deleted { get; set; }
          [IgnoreAll]
         public int RowTotal {get; set;}
