@@ -58,7 +58,7 @@ CREATE TABLE dbo.QuestionComplexities
 	QuestionComplexityId					int IDENTITY PRIMARY KEY,
 	ComplexityCode 							national character varying(50) NOT NULL,
 	ComplexityTitle 						national character varying(100) NOT NULL,
-	Marks									decimal,
+	Marks									decimal(5,2),
 	Deleted									bit NOT NULL DEFAULT(0) 
 
 );
@@ -189,6 +189,7 @@ CREATE TABLE dbo.AnswersByInterviewees
 	ObjectiveAnswer							national character varying(1000),
 	AnsweredBy								bigint REFERENCES dbo.Interviewees,
 	AuditTs				 					DATETIMEOFFSET DEFAULT(GETDATE()),
+	IsChecked								bit NOT NULL DEFAULT(0) 
 	Deleted									bit NOT NULL DEFAULT(0) 
 );
 
