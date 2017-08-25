@@ -96,7 +96,7 @@ namespace VPortal.TokenManager
         
             // Serialize and return the response
             context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(response, _serializerSettings));
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(response));//JsonConvert.SerializeObject(response, _serializerSettings));
         }
 
         private static void ThrowIfInvalidOptions(TokenProviderOptions options)
