@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using VExam.DTO;
 using VExam.Services.Departments;
@@ -11,7 +12,8 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/department")]
-     [AllowAnonymous]
+    [AllowAnonymous]
+
     public class DepartmentApiController : BaseApiController
 
     {
