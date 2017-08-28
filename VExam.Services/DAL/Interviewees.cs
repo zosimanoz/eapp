@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using VExam.DTO;
@@ -48,14 +49,14 @@ namespace VExam.Services.DAL
                     string questionQuery = "SELECT * FROM dbo.InterviewSessionCandidate_view " +
                                             "WHERE EmailAddress = @emailaddress " +
                                             "AND ContactNumber = @contactNumber";
-                    var result = await db.GetAsync<Interviewee>(questionQuery,
+                    var result = await db.QueryAsync<Interviewee>(questionQuery,
                     new
                     {
                         emailaddress = emailaddress,
                         contactNumber = contactnumber
                     });
                   
-                    return result;
+                    return result.FirstOrDefault();
                 }
             }
             catch (Exception)

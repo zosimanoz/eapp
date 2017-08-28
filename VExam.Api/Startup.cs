@@ -85,12 +85,12 @@ namespace VExam.Api
                 options.AddPolicy("Interviewee",
                     policy =>
                     {
-                        policy.RequireClaim(ClaimTypes.Actor,"Interviewee");
+                        policy.RequireClaim("Actor","Interviewee");
                     });
                 options.AddPolicy("Admin",
                policy =>
                {
-                   policy.RequireClaim(ClaimTypes.Actor,"User");
+                   policy.RequireClaim("Actor","User");
                });
 
             });
@@ -202,13 +202,14 @@ namespace VExam.Api
             if (result)
             {
                 var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress, contactnumber).Result;
-                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(emailaddress, "EmailAddress"),
+                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(intervieweeDetail.FullName, "FullName"),
                 new Claim[] {
-                    new Claim(ClaimTypes.Email,intervieweeDetail.EmailAddress),
+                    new Claim("FullName",intervieweeDetail.FullName),
+                    new Claim("EmailAddress",intervieweeDetail.EmailAddress),
                     new Claim("IntervieweeId",intervieweeDetail.IntervieweeId.ToString()),
                     new Claim("InterviewSessionId",intervieweeDetail.InterviewSessionId.ToString()),
                     new Claim("JobTitleId",intervieweeDetail.JobTitleId.ToString()),
-                    new Claim(ClaimTypes.Actor,"Interviewee")
+                    new Claim("Actor","Interviewee")
                  }));
             }
 
@@ -230,13 +231,12 @@ namespace VExam.Api
                 var userDetails = Users.GetUserDetailAsync(emailAddress).Result;
                 return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(userDetails.FirstName, "Name"),
                    new Claim[] {
-                    new Claim(ClaimTypes.Email,emailAddress),
-                    new Claim(ClaimTypes.Role,userDetails.RoleId),
+                    new Claim("EmailAddress",emailAddress),
+                    new Claim("Role",userDetails.RoleId),
                     new Claim("Department",userDetails.DepartmentId.ToString()),
                     new Claim("UserId",userDetails.UserId.ToString()),
-                    new Claim(ClaimTypes.Actor,"User")
+                    new Claim("Actor","User")
                    }));
-
             }
             //  Account doesn't exists
             return Task.FromResult<ClaimsIdentity>(null);

@@ -13,28 +13,29 @@ using Microsoft.AspNetCore.Mvc;
 namespace VExam.Api.Controllers
 {
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class ValuesApiController : Controller
     {
         // GET api/values
         [HttpPost]
-       // [ValidateAntiForgeryToken]
-         [Route("logout")]
+        // [ValidateAntiForgeryToken]
+        [Route("logout")]
         public async Task<bool> Logout()
         {
             Console.WriteLine("Logging out...");
-          	 await HttpContext.Authentication.SignOutAsync("Cookie");
-        	return true;
+            await HttpContext.Authentication.SignOutAsync("Cookie");
+            return true;
         }
-
+  
         [HttpGet]
-       // [Authorize]
+        // [Authorize]
         public IEnumerable<string> Get()
         {
-         //    PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-         // bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
-         // UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
-            
-            
+            //    PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            // bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
+            // UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
+
+
             return new string[] { "value1", "value2" };
         }
 
@@ -44,9 +45,9 @@ namespace VExam.Api.Controllers
         public async Task<string> GetAsync(int id)
         {
             Console.WriteLine("Logging out...");
-        //  JWTAuth::invalidate($token);
-        await HttpContext.Authentication.SignOutAsync("Cookie");
-        return "value";
+            //  JWTAuth::invalidate($token);
+            await HttpContext.Authentication.SignOutAsync("Cookie");
+            return "value";
         }
 
 
