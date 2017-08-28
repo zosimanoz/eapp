@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -25,14 +22,11 @@ using VExam.Services.QuestionComplexities;
 using VExam.Services.QuestionTypes;
 using VExam.Services.QuestionsforSets;
 using VExam.Services.SessionwiseJobs;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using VExam.Services.Users;
 using VExam.Services.ExamSetService;
 using VExam.Services.InterviewSessions;
-using Microsoft.AspNetCore.Http;
-using VExam.Services.Answers;
 
 namespace VExam.Api
 {
@@ -53,6 +47,8 @@ namespace VExam.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();            
+
             // Add framework services.
             // Add framework services.
             services.AddSingleton(Configuration);
@@ -61,6 +57,8 @@ namespace VExam.Api
             // The services of the core engine are injected here
             // core engine has services related to database and logger
             services.RegisterVPortalCoreServices(serviceProvider);
+
+
 
             // By default the json result from WebApi is camelCased, so convert it into PascalCase for easiness using SerializerSettings
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
@@ -71,6 +69,8 @@ namespace VExam.Api
                 options.Cookies.ApplicationCookie.AutomaticChallenge = true;
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "Bearer";
             });
+
+
 
             services.AddMvc(config =>
             {
@@ -96,7 +96,7 @@ namespace VExam.Api
             });
 
             services.AddMvcCore().AddJsonFormatters();
-            services.AddCors();
+          
             // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //custom services...
             services.AddTransient<IDepartmentService, DepartmentService>();
@@ -111,8 +111,7 @@ namespace VExam.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IExamSetService, ExamSetService>();
             services.AddTransient<IInterviewSessionService, InterviewSessionService>();
-            services.AddTransient<IAnswerService, AnswerService>();
-            
+
 
         }
 
@@ -122,11 +121,13 @@ namespace VExam.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseCors(
+                options => options.AllowAnyOrigin().AllowAnyHeader().AllowCredentials().AllowAnyMethod()
+            );
+
+
             //app.UseIdentity();
             Register(app);
-
-            app.UseCors(builder =>
-                    builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
             app.UseMvc();
 
