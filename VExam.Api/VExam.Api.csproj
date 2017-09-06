@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="microsoft.identitymodel.tokens" Version="5.1.4" />
     <PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="2.3.7" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VPortal.Core\VPortal.Core.csproj" />

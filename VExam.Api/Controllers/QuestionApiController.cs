@@ -19,10 +19,10 @@ using System.Collections.Generic;
 namespace VExam.Api.Controllers
 {
 
-    [Authorize(Policy = "Admin")]
+    //[Authorize(Policy = "Admin")]
     [Route("api/v1/questionbank")]
     //[Authorize]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public class QuestionApiController : BaseApiController
     {
 
@@ -37,7 +37,6 @@ namespace VExam.Api.Controllers
 
 
         [HttpPost]
-        //  [Authorize]
         [Route("new")]
         public async Task<ApiResponse> PostAsync([FromBody] QuestionViewModel model)
         {
@@ -56,20 +55,12 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPut]
-        //  [Authorize]
         [Route("update")]
         public async Task<ApiResponse> UpdateAsync([FromBody] QuestionViewModel model)
         {
             try
             {
-                var result = await _questionService.CrudService.UpdateAsync(model.Question);
-                if (model.Question.QuestionTypeId == 2) // 1= subjective , 2 = objective
-                {
-                    foreach (var item in model.Options)
-                    {
-                        await _questionService.ObjectiveOptionCrudService.UpdateAsync(item);
-                    }
-                }
+                var result = await _questionService.UpdateQuestionAsync(model);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
@@ -81,10 +72,10 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPut]
-        //  [Authorize]
         [Route("delete/{questionId}")]
         public async Task<ApiResponse> DeleteAsync(long questionId)
         {
+            Console.WriteLine("delete api called");
             try
             {
                 var result = await _questionService.DeleteQuestionAsync(questionId);
@@ -100,13 +91,31 @@ namespace VExam.Api.Controllers
 
 
         [HttpGet]
-        //  [Authorize]
         [Route("get/all")]
         public async Task<ApiResponse> GetAllAsync()
         {
             try
             {
-                var result = await _questionService.CrudService.GetListAsync();
+                string whereCondition=" where deleted = @delete";
+                var result = await _questionService.CrudService.GetListAsync(whereCondition,
+                new {
+                    delete=0
+                });
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+               [HttpGet]
+        [Route("get/{questionId}")]
+        public async Task<ApiResponse> GetByQuestionIdAsync(long questionId)
+        {
+            try
+            {
+                var result = await _questionService.GetQuestionByQuestionIdAsync(questionId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)
@@ -116,7 +125,6 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
-        //  [Authorize]
         [Route("search")]
         public async Task<ApiResponse> SearchQuestionBankAsync(QuestionSearch model)
         {
@@ -134,7 +142,6 @@ namespace VExam.Api.Controllers
         }
 
         [HttpGet]
-        //  [Authorize]
         [Route("select")]
         public async Task<ApiResponse> SelectQuestionBankAsync()
         {

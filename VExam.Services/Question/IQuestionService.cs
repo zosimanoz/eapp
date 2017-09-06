@@ -19,5 +19,8 @@ namespace VExam.Services.Question
         Task<int> DeleteQuestionAsync(long questionId);
         Task<IEnumerable<QuestionBanks>> SearchQuestionAsync(QuestionSearch model);
         Task<IEnumerable<QuestionBanks>> SelectQuestionBankViewAsync();
+        Task<QuestionViewModel> GetQuestionByQuestionIdAsync(long questionId);
+        Task<int> DeleteOptionByQuestionIdAsync(long questionId);
+        Task<long> UpdateQuestionAsync(QuestionViewModel model);
     }
 }

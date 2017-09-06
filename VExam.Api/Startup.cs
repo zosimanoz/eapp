@@ -27,6 +27,9 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using VExam.Services.Users;
 using VExam.Services.ExamSetService;
 using VExam.Services.InterviewSessions;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace VExam.Api
 {
@@ -47,7 +50,7 @@ namespace VExam.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();            
+            services.AddCors();
 
             // Add framework services.
             // Add framework services.
@@ -79,24 +82,24 @@ namespace VExam.Api
                             .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
-            
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Interviewee",
                     policy =>
                     {
-                        policy.RequireClaim("Actor","Interviewee");
+                        policy.RequireClaim("Actor", "Interviewee");
                     });
                 options.AddPolicy("Admin",
                policy =>
                {
-                   policy.RequireClaim("Actor","User");
+                   policy.RequireClaim("Actor", "User");
                });
 
             });
 
             services.AddMvcCore().AddJsonFormatters();
-          
+
             // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //custom services...
             services.AddTransient<IDepartmentService, DepartmentService>();
@@ -125,11 +128,17 @@ namespace VExam.Api
                 options => options.AllowAnyOrigin().AllowAnyHeader().AllowCredentials().AllowAnyMethod()
             );
 
-
             //app.UseIdentity();
             Register(app);
 
             app.UseMvc();
+            app.UseStaticFiles();
+            //           app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+            // {
+            //     FileProvider = new PhysicalFileProvider(
+            //         Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot", "images")),
+            //     RequestPath = new PathString("/MyImages")
+            // });
 
         }
         public void Register(IApplicationBuilder app)
@@ -190,7 +199,7 @@ namespace VExam.Api
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(tokenProviderOptions));
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(userTokenProvider));
 
-            
+
         }
 
         private Task<ClaimsIdentity> GetIdentity(string emailaddress, string contactnumber)

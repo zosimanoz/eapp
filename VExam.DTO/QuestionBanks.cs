@@ -10,7 +10,6 @@ namespace VExam.DTO
         public long QuestionId { get; set; }
         public int QuestionTypeId { get; set; }
         public int QuestionCategoryId { get; set; }
-        public int JobTitleId { get; set; }
         public string Question { get; set; }
         public string Attachment { get; set; }
         public int QuestionComplexityId { get; set; }
