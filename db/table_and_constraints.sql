@@ -69,11 +69,10 @@ CREATE TABLE dbo.QuestionBank
 	QuestionId 								bigint IDENTITY PRIMARY KEY,
 	QuestionTypeId							int REFERENCES dbo.QuestionTypes NOT NULL,
 	QuestionCategoryId  					int REFERENCES dbo.QuestionCategories NOT NULL,
-	JobTitleId								int REFERENCES dbo.JobTitles,
 	Question 								national character varying(MAX),
 	Attachment								national character varying(1000),
 	QuestionComplexityId 				    int REFERENCES dbo.QuestionComplexities NOT NULL,
-	Marks 									decimal,
+	Marks 									decimal(5,2),
 	PreparedBy 								bigint REFERENCES dbo.Users NOT NULL,
 	AuditTs									DATETIMEOFFSET DEFAULT(GETDATE()),
 	Deleted									bit NOT NULL DEFAULT(0) 
