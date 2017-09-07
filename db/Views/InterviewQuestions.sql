@@ -25,5 +25,6 @@ ON dbo.SetQuestions.ExamSetId = dbo.SessionwiseJobs.ExamSetId
 INNER JOIN dbo.QuestionBankView
 ON dbo.QuestionBankView.QuestionId = dbo.SetQuestions.QuestionId
 WHERE dbo.Interviewees.deleted = 0
+AND SessionWiseJobs.Deleted = 0
 AND dbo.SetQuestions.Deleted = 0;
 
