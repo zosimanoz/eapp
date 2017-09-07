@@ -10,13 +10,13 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/examset")]
-     [AllowAnonymous]
+    [AllowAnonymous]
     public class ExamSetsApiController : BaseApiController
     {
         private IExamSetService _examSetService;
 
         private ILogger _logger;
-         public ExamSetsApiController(IExamSetService examSetService, ILogger logger)
+        public ExamSetsApiController(IExamSetService examSetService, ILogger logger)
         {
             _examSetService = examSetService;
             _logger = logger;
@@ -36,7 +36,7 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-         [HttpPut]
+        [HttpPut]
         [Route("delete/set/{examSetId}")]
         public async Task<ApiResponse> DeleteAsync(long examSetId)
         {
@@ -57,7 +57,12 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                var result = await _examSetService.CrudService.GetListAsync();
+                string whereCondition = " where deleted = @delete";
+                var result = await _examSetService.CrudService.GetListAsync(whereCondition,
+                new
+                {
+                    delete = 0
+                });
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

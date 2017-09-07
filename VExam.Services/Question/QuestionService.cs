@@ -229,16 +229,13 @@ namespace VExam.Services.Question
                     string questionQuery = "SELECT * FROM dbo.QuestionBankView WHERE " +
                                              "(@QuestionTypeId IS NULL OR QuestionTypeId = @QuestionTypeId) " +
                                              "AND (@QuestionCategoryId IS NULL OR QuestionCategoryId = @QuestionCategoryId) " +
-                                             "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) " +
                                              "AND (@QuestionComplexityId IS NULL OR QuestionComplexityId = @QuestionComplexityId) " +
-                                             "AND (Question LIKE @Question)" +
-                                             "AND Deleted = 0";
+                                             "AND (Question LIKE @Question)" ;
                     var result = await db.QueryAsync<QuestionBanks>(questionQuery,
                     new
                     {
                         QuestionTypeId = model.QuestionTypeId == 0 ? (int?)null : (int?)model.QuestionTypeId,
                         QuestionCategoryId = model.QuestionCategoryId == 0 ? (int?)null : (int?)model.QuestionCategoryId,
-                        JobTitleId = model.JobTitleId == 0 ? (int?)null : (int?)model.JobTitleId,
                         QuestionComplexityId = model.QuestionComplexityId == 0 ? (int?)null : (int?)model.QuestionComplexityId,
                         Question = "%" + model.Question + "%"
                     });
