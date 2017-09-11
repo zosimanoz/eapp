@@ -39,7 +39,9 @@ namespace VExam.DTO
         public string QuestionComplexityName { get; set; }
         [IgnoreAll]
         public string QuestionComplexityCode { get; set; }
-      
+        [IgnoreAll]
+        public decimal Marks { get; set; }
+
 
     }
 }

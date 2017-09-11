@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using VExam.DTO;
@@ -25,7 +26,7 @@ namespace VExam.Services.QuestionsforSets
             {
                 try
                 {
-                   await db.OpenAsync();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.SetQuestions SET deleted = @delete WHERE SetQuestionId = @SetQuestionId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
@@ -56,6 +57,13 @@ namespace VExam.Services.QuestionsforSets
                     {
                         try
                         {
+                            string questionQuery = "UPDATE dbo.SetQuestions SET deleted = @delete WHERE ExamSetId = @ExamSetId";
+                            var deleteResponse = await db.ExecuteAsync(questionQuery,
+                              new
+                              {
+                                  delete = 1,
+                                  ExamSetId = ((model.QuestionsForSet).FirstOrDefault()).ExamSetId
+                              }, tran);
                             var result = 0;
                             foreach (var item in model.QuestionsForSet)
                             {
@@ -77,6 +85,7 @@ namespace VExam.Services.QuestionsforSets
                         }
                         catch (Exception)
                         {
+                            tran.Rollback();
                             throw;
                         }
                     }

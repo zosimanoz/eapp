@@ -73,12 +73,12 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
-        [Route("get/{questionSetId}")]
-        public async Task<ApiResponse> GetAllQuestionsBySetId(long questionSetId)
+        [Route("get/{examSetId}")]
+        public async Task<ApiResponse> GetAllQuestionsBySetId(long examSetId)
         {
             try
             {
-                var result = await _questionService.GetQuestionsBySetIdAsync(questionSetId);
+                var result = await _questionService.GetQuestionsBySetIdAsync(examSetId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

@@ -37,7 +37,7 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpPut]
-        [Route("delete/set/{examSetId}")]
+        [Route("delete/{examSetId}")]
         public async Task<ApiResponse> DeleteAsync(long examSetId)
         {
             try
@@ -51,8 +51,26 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+        [HttpPut]
+        [Route("update")]
+        public async Task<ApiResponse> UpdateAsync([FromBody] DTO.ExamSet model)
+        {
+            Console.WriteLine(model.Title);
+           
+            try
+            {
+                var result = await _examSetService.CrudService.UpdateAsync(model);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
         [HttpGet]
-        [Route("get/all/sets")]
+        [Route("get/all")]
         public async Task<ApiResponse> GetAllAsync()
         {
             try
@@ -73,7 +91,7 @@ namespace VExam.Api.Controllers
         }
 
         [HttpGet]
-        [Route("get/set/{examSetId}")]
+        [Route("get/{examSetId}")]
         public async Task<ApiResponse> GetAsync(long examSetId)
         {
             try
