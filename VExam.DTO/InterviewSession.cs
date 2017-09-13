@@ -11,7 +11,6 @@ namespace VExam.DTO
         public string Title { get; set; }
         public DateTime SessionStartDate { get; set; }
         public DateTime SessionEndDate { get; set; }
-        public int JobTitleId { get; set; }
         [IgnoreAll]
         public string JobTitle { get; set; }
         public long CreatedBy { get; set; }

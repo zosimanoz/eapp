@@ -70,16 +70,16 @@ namespace VExam.Services.InterviewSessions
             {
                 try
                 {
+                    Console.WriteLine(model.CreatedBy);
                     await db.OpenAsync();
                     string optionQuery = "INSERT INTO dbo.InterviewSessions VALUES" +
-                    " (@Title, @StartDate,@EndDate,@JobTitleId,@CreatedBy,@AuditTs,@Deleted)";
+                    " (@Title, @StartDate,@EndDate,@CreatedBy,@AuditTs,@Deleted)";
                     var result = await db.ExecuteAsync(optionQuery,
                       new
                       {
                           Title = model.Title,
                           StartDate = model.SessionStartDate,
                           EndDate = model.SessionEndDate,
-                          JobTitleId = model.JobTitleId,
                           CreatedBy = model.CreatedBy,
                           AuditTs = DateTime.Now,
                           Deleted = 0
@@ -104,7 +104,6 @@ namespace VExam.Services.InterviewSessions
                     "Title = @Title," +
                     "SessionStartDate = @StartDate," +
                     "SessionEndDate = @EndDate," +
-                    "JobTitleId = @JobTitleId," +
                     "AuditTs = @AuditTs " +
                     "WHERE InterviewSessionId = @IntervierwSessionId";
                     var result = await db.ExecuteAsync(optionQuery,
@@ -113,7 +112,6 @@ namespace VExam.Services.InterviewSessions
                           Title = model.Title,
                           StartDate = model.SessionStartDate,
                           EndDate = model.SessionEndDate,
-                          JobTitleId = model.JobTitleId,
                           AuditTs = DateTime.Now,
                           IntervierwSessionId = model.InterviewSessionId
                       });
@@ -136,7 +134,6 @@ namespace VExam.Services.InterviewSessions
                     string questionQuery = "SELECT * FROM dbo.InterviewResultSummaryView WHERE " +
                                              "(@IntervieweeId IS NULL OR IntervieweeId = @IntervieweeId) " +
                                              "AND (@InterviewSessionId IS NULL OR InterviewSessionId = @InterviewSessionId) " +
-                                             "AND (@JobTitleId IS NULL OR JobTitleId = @JobTitleId) " +
                                              "AND (EmailAddress LIKE @EmailAddress) " +
                                              "AND (IntervieweeName LIKE @IntervieweeName)" +
                                              " ORDER BY MarksObtained DESC";
@@ -145,7 +142,6 @@ namespace VExam.Services.InterviewSessions
                     {
                         IntervieweeId = model.IntervieweeId == 0 ? (int?)null : (int?)model.IntervieweeId,
                         InterviewSessionId = model.InterviewSessionId == 0 ? (int?)null : (int?)model.InterviewSessionId,
-                        JobTitleId = model.JobTitleId == 0 ? (int?)null : (int?)model.JobTitleId,
                         EmailAddress = "%" + model.EmailAddress +"%",
                         IntervieweeName = "%" + model.IntervieweeName + "%"
                     });

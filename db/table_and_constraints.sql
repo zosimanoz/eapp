@@ -188,7 +188,7 @@ CREATE TABLE dbo.AnswersByInterviewees
 	ObjectiveAnswer							national character varying(1000),
 	AnsweredBy								bigint REFERENCES dbo.Interviewees,
 	AuditTs				 					DATETIMEOFFSET DEFAULT(GETDATE()),
-	IsChecked								bit NOT NULL DEFAULT(0) 
+	IsChecked								bit NOT NULL DEFAULT(0), 
 	Deleted									bit NOT NULL DEFAULT(0) 
 );
 

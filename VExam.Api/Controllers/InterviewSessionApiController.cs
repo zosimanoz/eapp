@@ -10,7 +10,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/interviewsession")]
-     [AllowAnonymous]
+    [AllowAnonymous]
     public class InterviewSessionApiController : BaseApiController
     {
         private IInterviewSessionService _interviewSessionService;
@@ -29,8 +29,8 @@ namespace VExam.Api.Controllers
             try
             {
                 Console.WriteLine(model.SessionStartDate);
-                 Console.WriteLine(model.SessionEndDate);
-               //  model.SessionStartDate = DateTime.Parse(model.SessionStartDate.ToString("yyyy-MM-ddTHH:mm:ss.fff"));
+                Console.WriteLine(model.SessionEndDate);
+                //  model.SessionStartDate = DateTime.Parse(model.SessionStartDate.ToString("yyyy-MM-ddTHH:mm:ss.fff"));
                 var result = await _interviewSessionService.AddInterviewSessionAsync(model);
                 return HttpResponse(200, "", result);
 
@@ -38,7 +38,7 @@ namespace VExam.Api.Controllers
             catch (Exception e)
             {
                 _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500,e.Message);
+                return HttpResponse(500, e.Message);
             }
         }
 
@@ -74,6 +74,21 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<ApiResponse> GetById(int id)
+        {
+            try
+            {
+                var result = await _interviewSessionService.CrudService.GetAsync(id);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
         [HttpPut]
         [Route("delete/{interviewSessionId}")]
         public async Task<ApiResponse> DeleteAsync(long interviewSessionId)
@@ -90,7 +105,7 @@ namespace VExam.Api.Controllers
             }
         }
 
-         [HttpGet]
+        [HttpGet]
         [Route("result/summary")]
         public async Task<ApiResponse> ResultAsync(ResultSummary model)
         {

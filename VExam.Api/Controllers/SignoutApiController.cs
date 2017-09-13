@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VPortal.Core.Log;
 using VPortal.WebExtensions.API;
@@ -17,13 +18,16 @@ namespace VExam.Api.Controllers
         }
         [HttpPost]
         [Route("api/v1/logout")]
+        [Authorize]
         public async Task<ApiResponse> Logout()
         {
             try
             {
                 Console.WriteLine("Logging out...");
                 await HttpContext.Authentication.SignOutAsync("Cookie");
-                return HttpResponse(500, "true");
+
+                Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
+                return HttpResponse(200, "true");
             }
             catch (Exception e)
             {

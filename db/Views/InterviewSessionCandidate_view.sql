@@ -18,7 +18,7 @@ FROM interviewees
 INNER JOIN InterviewSessions
 ON interviewees.InterviewSessionId = InterviewSessions.InterviewSessionId
 INNER JOIN JobTitles
-ON JobTitles.JobTitleId = InterviewSessions.JobTitleId
+ON JobTitles.JobTitleId = interviewees.JobTitleId
 WHERE InterviewSessions.SessionStartDate <= GetDate()
 AND InterviewSessions.SessionEndDate >= GetDate()
 AND InterviewSessions.Deleted = 0
