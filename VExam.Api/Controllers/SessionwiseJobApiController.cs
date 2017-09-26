@@ -10,8 +10,8 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
 
- [AllowAnonymous]
- [Route("api/v1/sessionwisejob")]
+    [AllowAnonymous]
+    [Route("api/v1/sessionwisejob")]
     public class SessionwiseJobApiController : BaseApiController
     {
         private ISessionwiseJobsService _sessionwiseJobsService;
@@ -29,17 +29,10 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                model.AuditTs= DateTime.Now;
-                if (model.SessionwiseJobId == 0)
-                {
-                    var result = await _sessionwiseJobsService.CrudService.InsertAsync(model);
-                    return HttpResponse(200, "", result.Value);
-                }
-                else
-                {
-                    var result = await _sessionwiseJobsService.CrudService.UpdateAsync(model);
-                    return HttpResponse(200, "", result);
-                }
+                model.AuditTs = DateTime.Now;
+                var result = await _sessionwiseJobsService.CrudService.InsertAsync(model);
+                return HttpResponse(200, "", result.Value);
+
             }
             catch (Exception e)
             {
@@ -48,6 +41,23 @@ namespace VExam.Api.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("update")]
+        public async Task<ApiResponse> UpdateAsync([FromBody] SessionwiseJob model)
+        {
+            try
+            {
+                model.AuditTs = DateTime.Now;
+                var result = await _sessionwiseJobsService.CrudService.UpdateAsync(model);
+                return HttpResponse(200, "", result);
+
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
 
         [HttpGet]
         [Route("get/{sessionwiseJobId}")]
@@ -82,7 +92,7 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
-         [HttpPut]
+        [HttpPut]
         //  [Authorize]
         [Route("delete/{sessionwiseJobId}")]
         public async Task<ApiResponse> DeleteAsync(long sessionwiseJobId)
@@ -90,6 +100,22 @@ namespace VExam.Api.Controllers
             try
             {
                 var result = await _sessionwiseJobsService.DeleteAsync(sessionwiseJobId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("session/{sessionId}")]
+        public async Task<ApiResponse> GetBySessionId(long sessionId)
+        {
+            try
+            {
+                var result = await _sessionwiseJobsService.GetJobsBySessionIdAsync(sessionId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

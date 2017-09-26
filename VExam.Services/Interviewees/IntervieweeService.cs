@@ -44,7 +44,28 @@ namespace VExam.Services.Interviewees
             }
 
         }
+        public async Task<IEnumerable<Interviewee>> GetintervieweesBySessionIdAsync(long interviewSessionId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    var query = "SELECT * FROM dbo.IntervieweeView WHERE InterviewSessionId = @InterviewSessionId" ;
 
+                    var result = await db.QueryAsync<Interviewee>(query, new
+                    {
+                        InterviewSessionId = interviewSessionId
+                    });
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<bool> IntervieweeValidationAsync(string emailaddress, string contactnumber)
         {
             try

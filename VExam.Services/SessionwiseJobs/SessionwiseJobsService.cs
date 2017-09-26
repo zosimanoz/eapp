@@ -9,6 +9,7 @@ using System.Text;
 using System;
 using VExam.DTO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace VExam.Services.SessionwiseJobs
 {
@@ -23,13 +24,14 @@ namespace VExam.Services.SessionwiseJobs
                 try
                 {
                     await db.OpenAsync();
-                    string questionQuery = "UPDATE dbo.SessionwiseJobs SET deleted = @delete WHERE SessionwiseJobId = @SetQuestionId";
+                    string questionQuery = "UPDATE dbo.SessionwiseJobs SET deleted = @delete WHERE SessionwiseJobId = @SessionwiseJobId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
                             {
                                 delete = 1,
                                 SessionwiseJobId = sessionwiseJobId
                             });
+                            Console.WriteLine(result);
                     return result;
 
                 }
@@ -40,6 +42,30 @@ namespace VExam.Services.SessionwiseJobs
 
             }
 
+        }
+        public async Task<IEnumerable<SessionwiseJob>> GetJobsBySessionIdAsync(long sessionId)
+        {
+            var dbfactory = DbFactoryProvider.GetFactory();
+            using (var db = (SqlConnection)dbfactory.GetConnection())
+            {
+                try
+                {
+                    await db.OpenAsync();
+                    string query = "SELECT * FROM SessionJobView WHERE InterviewSessionId = @sessionId";
+                    var result = await db.QueryAsync<SessionwiseJob>(query,
+                            new
+                            {
+                                sessionId = sessionId
+                            });
+                    return result;
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+            }
         }
 
     }

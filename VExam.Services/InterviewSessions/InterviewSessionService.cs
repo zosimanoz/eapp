@@ -63,6 +63,27 @@ namespace VExam.Services.InterviewSessions
                 throw;
             }
         }
+
+        public async Task<IEnumerable<InterviewSession>> GetInterviewSessionHistory()
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    List<QuestionViewModel> question = new List<QuestionViewModel>();
+                    var query = "SELECT * FROM dbo.InterviewSessionHistoryView";
+                    var result = await db.QueryAsync<InterviewSession>(query);
+                    return result;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<int> AddInterviewSessionAsync(InterviewSession model)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
@@ -142,7 +163,7 @@ namespace VExam.Services.InterviewSessions
                     {
                         IntervieweeId = model.IntervieweeId == 0 ? (int?)null : (int?)model.IntervieweeId,
                         InterviewSessionId = model.InterviewSessionId == 0 ? (int?)null : (int?)model.InterviewSessionId,
-                        EmailAddress = "%" + model.EmailAddress +"%",
+                        EmailAddress = "%" + model.EmailAddress + "%",
                         IntervieweeName = "%" + model.IntervieweeName + "%"
                     });
                     Console.WriteLine(questionQuery);

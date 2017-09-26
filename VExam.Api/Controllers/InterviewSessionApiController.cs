@@ -75,6 +75,21 @@ namespace VExam.Api.Controllers
             }
         }
         [HttpGet]
+        [Route("history")]
+        public async Task<ApiResponse> GetInterviewSessionHistoryAsync()
+        {
+            try
+            {
+                var result = await _interviewSessionService.GetInterviewSessionHistory();
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpGet]
         [Route("get/{id}")]
         public async Task<ApiResponse> GetById(int id)
         {

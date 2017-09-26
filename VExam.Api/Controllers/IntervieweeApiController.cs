@@ -11,7 +11,7 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/interviewee")]
-     [AllowAnonymous]
+    [AllowAnonymous]
     public class IntervieweeApiController : BaseApiController
 
     {
@@ -30,6 +30,7 @@ namespace VExam.Api.Controllers
         {
             try
             {
+                Console.WriteLine(model.ContactNumber);
                 var result = await _intervieweeService.CrudService.InsertAsync(model);
                 return HttpResponse(200, "", result.Value);
             }
@@ -41,7 +42,7 @@ namespace VExam.Api.Controllers
         }
 
         [HttpPut]
-        [Route("delete")]
+        [Route("delete/{intervieweeId}")]
         public async Task<ApiResponse> DeleteAsync(long intervieweeId)
         {
             try
@@ -78,6 +79,22 @@ namespace VExam.Api.Controllers
             try
             {
                 var result = await _intervieweeService.GetinterviewQuestions(intervieweeId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get/session/{interviewSessionId}")]
+        public async Task<ApiResponse> GetIntervieweeBySessionId(long interviewSessionId)
+        {
+            try
+            {
+                var result = await _intervieweeService.GetintervieweesBySessionIdAsync(interviewSessionId);
                 return HttpResponse(200, "", result);
             }
             catch (Exception e)

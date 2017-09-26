@@ -16,6 +16,7 @@ namespace VExam.Services.InterviewSessions
         CrudService<InterviewSession> CrudService { get; set; }
         Task<long> DeleteAsync(long interviewSessionId);
         Task<IEnumerable<InterviewSession>> GetActiveInterviewSessions();
+         Task<IEnumerable<InterviewSession>> GetInterviewSessionHistory();
         Task<int> AddInterviewSessionAsync(InterviewSession model);
         Task<int> UpdateAsync(InterviewSession model);
         Task<IEnumerable<ResultSummary>> ResultSummaryAsync(ResultSummary model);
