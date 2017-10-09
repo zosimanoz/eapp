@@ -30,6 +30,7 @@ using VExam.Services.InterviewSessions;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using VExam.Services.Answers;
 
 namespace VExam.Api
 {
@@ -114,7 +115,7 @@ namespace VExam.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IExamSetService, ExamSetService>();
             services.AddTransient<IInterviewSessionService, InterviewSessionService>();
-
+            services.AddTransient<IAnswerService, AnswerService>();
 
         }
 

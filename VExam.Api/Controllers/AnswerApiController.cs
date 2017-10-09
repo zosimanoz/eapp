@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,19 +25,39 @@ namespace VExam.Api.Controllers
         [HttpPost]
         //  [Authorize]
         [Route("save")]
-        public async Task<ApiResponse> PostAsync([FromBody] AnswersViewModel model)
+        public ApiResponse Post([FromBody] IEnumerable<QuestionViewModel> model)
         {
-            try
+            foreach (var item in model)
             {
-               var result = await _answerService.SaveAnswerAsync(model);
-               return HttpResponse(200, "", result);
+                Console.WriteLine(item.Options);
             }
-            catch (Exception e)
-            {
-                _logger.Log(LogType.Error, () => e.Message, e);
-                return HttpResponse(500, e.Message);
-            }
+            // try
+            // {
+            //    var result = await _answerService.SaveAnswerAsync(model);
+            //    return HttpResponse(200, "", result);
+            // }
+            // catch (Exception e)
+            // {
+            //     _logger.Log(LogType.Error, () => e.Message, e);
+            //     return HttpResponse(500, e.Message);
+            // }
+            return HttpResponse(500, "", model);
         }
+
+
+        // public async Task<ApiResponse> PostAsync([FromBody] AnswersViewModel model)
+        // {
+        //     try
+        //     {
+        //        var result = await _answerService.SaveAnswerAsync(model);
+        //        return HttpResponse(200, "", result);
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         _logger.Log(LogType.Error, () => e.Message, e);
+        //         return HttpResponse(500, e.Message);
+        //     }
+        // }
 
         //  [HttpGet]
         // //  [Authorize]
