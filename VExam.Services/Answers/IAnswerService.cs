@@ -9,7 +9,7 @@ namespace VExam.Services.Answers
     public interface IAnswerService
     {
         CrudService<AnswersByInterviewees> CrudService { get; set; }
-        Task<int> SaveAnswerAsync(AnswersViewModel model);
+        Task<int> SaveAnswerAsync(IEnumerable<AnswersByInterviewees> Answer);
         // Task<QuestionViewModel> FilterAnswerAsync(int questionType);
         Task CheckObjectiveAnswers(long intervieweeId);
         Task<int> CheckAnswer(Result model);

@@ -15,5 +15,6 @@ namespace VExam.DTO
         public long CreatedBy { get; set; }
         public DateTimeOffset AuditTs { get; set; }
         public bool Deleted { get; set; }
+        public int ExamDuration { get; set; }
     }
 }

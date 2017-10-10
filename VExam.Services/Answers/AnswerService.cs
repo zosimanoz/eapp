@@ -14,7 +14,7 @@ namespace VExam.Services.Answers
     public class AnswerService : IAnswerService
     {
         public CrudService<AnswersByInterviewees> CrudService { get; set; } = new CrudService<AnswersByInterviewees>();
-        public async Task<int> SaveAnswerAsync(AnswersViewModel model)
+        public async Task<int> SaveAnswerAsync(IEnumerable<AnswersByInterviewees> Answer)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
@@ -27,10 +27,11 @@ namespace VExam.Services.Answers
                         try
                         {
                             var result = 0;
-                            foreach (var item in model.Answer)
+                            foreach (var item in Answer)
                             {
+                                Console.WriteLine(item.SetQuestionId);
                                 string optionQuery = "INSERT INTO dbo.AnswersByInterviewees VALUES" +
-                                " (@IntervieweeId, @SetQuestionId,@subjectiveAnswer,@ObjectiveAnswer,@AnsweredBy,@AuditTs,@Deleted)";
+                                " (@IntervieweeId, @SetQuestionId,@subjectiveAnswer,@ObjectiveAnswer,@AnsweredBy,@AuditTs,@Deleted,@IsChecked)";
                                 result = await db.ExecuteAsync(optionQuery,
                                  new
                                  {
@@ -39,8 +40,9 @@ namespace VExam.Services.Answers
                                      subjectiveAnswer = item.subjectiveAnswer,
                                      ObjectiveAnswer = item.ObjectiveAnswer,
                                      AnsweredBy = item.AnsweredBy,
-                                     AuditTs = DateTimeOffset.Now,
-                                     Deleted = 0
+                                     AuditTs = DateTimeOffset.UtcNow,
+                                     Deleted = 0,
+                                     IsChecked=0
                                  }, tran);
                             }
                             tran.Commit();
