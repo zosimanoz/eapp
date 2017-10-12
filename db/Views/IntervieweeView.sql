@@ -11,6 +11,7 @@ SELECT
 	interviewees.Address,
 	interviewees.ContactNumber,
 	interviewees.Attachments,
+	Interviewees.AttendedExam,
 	interviewees.JobTitleId,
 	JobTitles.JobTitle
 FROM interviewees
