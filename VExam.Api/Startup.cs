@@ -212,6 +212,7 @@ namespace VExam.Api
             if (result)
             {
                 var intervieweeDetail = Interviewees.GetIntervieweeDetailAsync(emailaddress, contactnumber).Result;
+                var attendedExam= Interviewees.MarkAttendedExamAsync(intervieweeDetail.IntervieweeId).Result;
                 return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(intervieweeDetail.FullName, "FullName"),
                 new Claim[] {
                     new Claim("FullName",intervieweeDetail.FullName),

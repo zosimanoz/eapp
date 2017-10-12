@@ -103,5 +103,21 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+
+        [HttpGet]
+        [Route("session/{interviewSessionId}/exam/attended")]
+        public async Task<ApiResponse> GetExamAttendedIntervieweeBySessionId(long interviewSessionId)
+        {
+            try
+            {
+                var result = await _intervieweeService.GetExamAttendedintervieweesBySessionIdAsync(interviewSessionId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
     }
 }

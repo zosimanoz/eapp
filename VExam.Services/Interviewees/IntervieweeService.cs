@@ -52,7 +52,7 @@ namespace VExam.Services.Interviewees
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
                     await db.OpenAsync();
-                    var query = "SELECT * FROM dbo.IntervieweeView WHERE InterviewSessionId = @InterviewSessionId" ;
+                    var query = "SELECT * FROM dbo.IntervieweeView WHERE InterviewSessionId = @InterviewSessionId";
 
                     var result = await db.QueryAsync<Interviewee>(query, new
                     {
@@ -66,6 +66,31 @@ namespace VExam.Services.Interviewees
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Interviewee>> GetExamAttendedintervieweesBySessionIdAsync(long interviewSessionId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    var query = "SELECT * FROM dbo.IntervieweeView WHERE InterviewSessionId = @InterviewSessionId AND AttendedExam = @AttendedExam";
+
+                    var result = await db.QueryAsync<Interviewee>(query, new
+                    {
+                        InterviewSessionId = interviewSessionId,
+                        AttendedExam = 1
+                    });
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<bool> IntervieweeValidationAsync(string emailaddress, string contactnumber)
         {
             try

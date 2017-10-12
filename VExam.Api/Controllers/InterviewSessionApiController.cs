@@ -104,6 +104,28 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<ApiResponse> GetAllInterviewSessions()
+        {
+            try
+            {
+                string whereCondition=" WHERE deleted = @delete ORDER BY SessionStartDate DESC  ";
+                var result = await _interviewSessionService.CrudService.GetListAsync(whereCondition,
+                new {
+                    delete=0
+                });
+                return HttpResponse(200, "", result);
+                             
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
         [HttpPut]
         [Route("delete/{interviewSessionId}")]
         public async Task<ApiResponse> DeleteAsync(long interviewSessionId)

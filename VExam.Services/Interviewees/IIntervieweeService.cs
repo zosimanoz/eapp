@@ -15,6 +15,7 @@ namespace VExam.Services.Interviewees
     {
         CrudService<Interviewee> CrudService { get; set; }
         Task<IEnumerable<Interviewee>> GetintervieweesBySessionIdAsync(long interviewSessionId);
+        Task<IEnumerable<Interviewee>> GetExamAttendedintervieweesBySessionIdAsync(long interviewSessionId);
         Task<bool> IntervieweeValidationAsync(string emailaddress, string contactnumber);
         Task<long> DeleteIntervieweeAsync(long intervieweeId);
         Task<IEnumerable<QuestionViewModel>> GetinterviewQuestions(long intervieweeId);

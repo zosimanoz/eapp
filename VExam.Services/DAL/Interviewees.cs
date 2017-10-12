@@ -55,7 +55,7 @@ namespace VExam.Services.DAL
                         emailaddress = emailaddress,
                         contactNumber = contactnumber
                     });
-                  
+
                     return result.FirstOrDefault();
                 }
             }
@@ -63,6 +63,33 @@ namespace VExam.Services.DAL
             {
                 throw;
             }
+        }
+
+        public static async Task<int> MarkAttendedExamAsync(long intervieweeId)
+        {
+            var dbfactory = DbFactoryProvider.GetFactory();
+            using (var db = (SqlConnection)dbfactory.GetConnection())
+            {
+                try
+                {
+                    await db.OpenAsync();
+                    string questionQuery = "update Interviewees set AttendedExam = @Attended WHERE IntervieweeId = @IntervieweeId";
+                    var result = await db.ExecuteAsync(questionQuery,
+                            new
+                            {
+                                Attended = 1,
+                                IntervieweeId = intervieweeId
+                            });
+                    return result;
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+            }
+
         }
     }
 }
