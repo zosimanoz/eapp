@@ -15,8 +15,8 @@ namespace VExam.Api
     public class TokenHandlerApiController : BaseApiController
     {
 
-        [HttpGet]
-        [Route("api/token/decode/{accessToken}")]
+        [HttpPost]
+        [Route("api/v1/token/decode")]
         public ApiResponse Decode(string accessToken)
         {
            
