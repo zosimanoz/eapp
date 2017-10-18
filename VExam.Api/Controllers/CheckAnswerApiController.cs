@@ -37,6 +37,56 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+
+        [HttpGet]
+        //  [Authorize]
+        [Route("all/answersheet/for/examineer/{intervieweeId}")]
+        public async Task<ApiResponse> GetInterviewAnswerSheetForExaminer(long intervieweeId)
+        {
+            try
+            {
+               var result = await _answerService.GetInterviewAnswerSheetForExamineer(intervieweeId);
+               return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpGet]
+        //  [Authorize]
+        [Route("subjective/answersheet/for/examineer/{intervieweeId}")]
+        public async Task<ApiResponse> GetInterviewSubjectiveAnswerSheetForExaminer(long intervieweeId)
+        {
+            try
+            {
+               var result = await _answerService.GetInterviewSubjectiveAnswerSheetForExamineer(intervieweeId);
+               return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+        [HttpGet]
+        //  [Authorize]
+        [Route("objective/answersheet/for/examineer/{intervieweeId}")]
+        public async Task<ApiResponse>GetInterviewObjectiveAnswerSheetForExaminer (long intervieweeId)
+        {
+            try
+            {
+               var result = await _answerService.GetInterviewObjectiveAnswerSheetForExamineer(intervieweeId);
+               return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
         [HttpGet]
         //  [Authorize]
         [Route("check/objectiveanswer/{intervieweeId}")]

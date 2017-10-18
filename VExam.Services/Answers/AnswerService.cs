@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using VExam.DTO;
@@ -42,7 +43,7 @@ namespace VExam.Services.Answers
                                      AnsweredBy = item.AnsweredBy,
                                      AuditTs = DateTimeOffset.UtcNow,
                                      Deleted = 0,
-                                     IsChecked=0
+                                     IsChecked = 0
                                  }, tran);
                             }
                             tran.Commit();
@@ -144,6 +145,7 @@ namespace VExam.Services.Answers
                     });
                     foreach (var item in result)
                     {
+
                         // can also check if the question type is subjective or objective;
                         var optionsQuery = "SELECT * FROM dbo.ObjectiveQuestionOptions WHERE QuestionId = @QuestionId";
 
@@ -151,15 +153,17 @@ namespace VExam.Services.Answers
                         {
                             QuestionId = item.QuestionId
                         });
-                        var answerQuery = "SELECT * FROM dbo.AnswersByInterviewees "+
-                        "WHERE IntervieweeId = @IntervieweeId "+
-                        "AND  SetQuestionId = @SetQuestionId "  ;
+                        var answerQuery = "SELECT * FROM dbo.AnswersByInterviewees " +
+                        "WHERE IntervieweeId = @IntervieweeId " +
+                        "AND SetQuestionId = @SetQuestionId ";
 
                         var answer = await db.GetAsync<AnswersByInterviewees>(answerQuery, new
                         {
                             IntervieweeId = item.IntervieweeId,
                             SetQuestionId = item.SetQuestionId
                         });
+                        Console.WriteLine(item.QuestionId);
+                        Console.WriteLine(item.SetQuestionId);
                         var questionModel = new QuestionViewModel
                         {
                             Question = item,
@@ -177,6 +181,117 @@ namespace VExam.Services.Answers
                 throw;
             }
         }
-        
+
+
+
+        public async Task<dynamic> GetInterviewAnswerSheetForExamineer(long intervieweeId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    List<InterviewQuestionAnswersheetForExamineerViewModel> question = new List<InterviewQuestionAnswersheetForExamineerViewModel>();
+                    var query = "SELECT * FROM dbo.InterviewQuestionsToCheckAnswersView WHERE IntervieweeId = @IntervieweeId";
+                    var result = await db.QueryAsync<InterviewQuestionsForExamineer>(query, new
+                    {
+                        IntervieweeId = intervieweeId
+                    });
+                    foreach (var item in result)
+                    {
+
+                        // can also check if the question type is subjective or objective;
+                        var optionsQuery = "SELECT * FROM dbo.ObjectiveOptionsWithAnswersByIntervieweesView WHERE QuestionId = @QuestionId";
+
+                        var options = await db.QueryAsync<ObjectiveQuestionOption>(optionsQuery, new
+                        {
+                            QuestionId = item.QuestionId
+                        });
+                        var questionModel = new InterviewQuestionAnswersheetForExamineerViewModel
+                        {
+                            Question = item,
+                            Options = options
+
+                        };
+                        question.Add(questionModel);
+                    }
+                    return question;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<dynamic> GetInterviewSubjectiveAnswerSheetForExamineer(long intervieweeId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    var query = "SELECT * FROM dbo.InterviewQuestionsToCheckAnswersView WHERE IntervieweeId = @IntervieweeId AND QuestionTypeId = @QuestionTypeId" ;
+                    var result = await db.QueryAsync<InterviewQuestionsForExamineer>(query, new
+                    {
+                        IntervieweeId = intervieweeId,
+                        QuestionTypeId = 1
+                    });
+                    
+                    return result;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public async Task<dynamic> GetInterviewObjectiveAnswerSheetForExamineer(long intervieweeId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    List<InterviewQuestionAnswersheetForExamineerViewModel> question = new List<InterviewQuestionAnswersheetForExamineerViewModel>();
+                    var query = "SELECT * FROM dbo.InterviewQuestionsToCheckAnswersView WHERE IntervieweeId = @IntervieweeId AND QuestionTypeId = @QuestionTypeId";
+                    var result = await db.QueryAsync<InterviewQuestionsForExamineer>(query, new
+                    {
+                        IntervieweeId = intervieweeId,
+                        QuestionTypeId = 2
+                    });
+                    foreach (var item in result)
+                    {
+
+                        // can also check if the question type is subjective or objective;
+                        var optionsQuery = "SELECT * FROM dbo.ObjectiveOptionsWithAnswersByIntervieweesView WHERE QuestionId = @QuestionId";
+
+                        var options = await db.QueryAsync<ObjectiveQuestionOption>(optionsQuery, new
+                        {
+                            QuestionId = item.QuestionId
+                        });
+                        var questionModel = new InterviewQuestionAnswersheetForExamineerViewModel
+                        {
+                            Question = item,
+                            Options = options
+
+                        };
+                        question.Add(questionModel);
+                    }
+                    return question;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

@@ -14,5 +14,8 @@ namespace VExam.Services.Answers
         Task CheckObjectiveAnswers(long intervieweeId);
         Task<int> CheckAnswer(Result model);
         Task<IEnumerable<QuestionViewModel>> GetInterviewQuestionAnswerSheet(long intervieweeId);
+        Task<dynamic> GetInterviewAnswerSheetForExamineer(long intervieweeId);
+         Task<dynamic> GetInterviewSubjectiveAnswerSheetForExamineer(long intervieweeId);
+        Task<dynamic> GetInterviewObjectiveAnswerSheetForExamineer(long intervieweeId);
     }
 }
