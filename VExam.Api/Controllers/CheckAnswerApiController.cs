@@ -40,7 +40,7 @@ namespace VExam.Api.Controllers
 
         [HttpGet]
         //  [Authorize]
-        [Route("all/answersheet/for/examineer/{intervieweeId}")]
+        [Route("all/answersheet/examineer/{intervieweeId}")]
         public async Task<ApiResponse> GetInterviewAnswerSheetForExaminer(long intervieweeId)
         {
             try
@@ -56,7 +56,7 @@ namespace VExam.Api.Controllers
         }
         [HttpGet]
         //  [Authorize]
-        [Route("subjective/answersheet/for/examineer/{intervieweeId}")]
+        [Route("subjective/answersheet/examineer/{intervieweeId}")]
         public async Task<ApiResponse> GetInterviewSubjectiveAnswerSheetForExaminer(long intervieweeId)
         {
             try
@@ -72,7 +72,7 @@ namespace VExam.Api.Controllers
         }
         [HttpGet]
         //  [Authorize]
-        [Route("objective/answersheet/for/examineer/{intervieweeId}")]
+        [Route("objective/answersheet/examineer/{intervieweeId}")]
         public async Task<ApiResponse>GetInterviewObjectiveAnswerSheetForExaminer (long intervieweeId)
         {
             try
