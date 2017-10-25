@@ -30,7 +30,6 @@ namespace VExam.Services.Answers
                             var result = 0;
                             foreach (var item in Answer)
                             {
-                                Console.WriteLine(item.SetQuestionId);
                                 string optionQuery = "INSERT INTO dbo.AnswersByInterviewees VALUES" +
                                 " (@IntervieweeId, @SetQuestionId,@subjectiveAnswer,@ObjectiveAnswer,@AnsweredBy,@AuditTs,@Deleted,@IsChecked)";
                                 result = await db.ExecuteAsync(optionQuery,
@@ -47,10 +46,13 @@ namespace VExam.Services.Answers
                                  }, tran);
                             }
                             tran.Commit();
+                             Console.WriteLine("result");
+                            Console.WriteLine(result);
                             return result;
                         }
                         catch (Exception)
                         {
+                             tran.Rollback();
                             throw;
                         }
                     }

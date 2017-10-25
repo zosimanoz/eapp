@@ -42,8 +42,8 @@ namespace VExam.Api.Controllers
                         }
                     item.Answers.ObjectiveAnswer = objectiveAnswers.Trim(',');
                     }
+                    answerList.Add(item.Answers);
                 }
-                 answerList.Add(item.Answers);
             }
             try
             {
