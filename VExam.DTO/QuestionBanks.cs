@@ -35,8 +35,10 @@ namespace VExam.DTO
         [IgnoreAll]
         public long IntervieweeId { get; set; }
         [IgnoreAll]
-        
+
         public long SetQuestionId { get; set; }
+        [IgnoreAll]
+        public int SN { get; set; }
         [IgnoreAll]
         public int RowTotal { get; set; }
     }
