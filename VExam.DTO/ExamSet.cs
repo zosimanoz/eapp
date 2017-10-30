@@ -16,5 +16,7 @@ namespace VExam.DTO
         public DateTimeOffset AuditTs { get; set; }
         public bool Deleted { get; set; }
         public int ExamDuration { get; set; }
+        [IgnoreAll]
+        public string JobTitle { get; set; }
     }
 }

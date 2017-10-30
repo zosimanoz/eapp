@@ -11,6 +11,7 @@ using VExam.DTO;
 using System.Threading.Tasks;
 using VExam.DTO.ViewModel;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VExam.Services.Interviewees
 {
@@ -132,8 +133,14 @@ namespace VExam.Services.Interviewees
                 {
                     await db.OpenAsync();
                     List<QuestionViewModel> question = new List<QuestionViewModel>();
-                    var query = "SELECT * FROM dbo.InterviewQuestions WHERE IntervieweeId = @IntervieweeId";
+                    var query = "SELECT  ROW_NUMBER() OVER (ORDER BY QuestionId) AS SN, * FROM dbo.InterviewQuestions WHERE IntervieweeId = @IntervieweeId";
                     var result = await db.QueryAsync<QuestionBanks>(query, new
+                    {
+                        IntervieweeId = intervieweeId
+                    });
+
+                    var examSetQuery = "SELECT * FROM dbo.ExamSetForIntervieweeView WHERE IntervieweeId = @IntervieweeId";
+                    var setInfo = await db.QueryAsync<ExamSet>(examSetQuery, new
                     {
                         IntervieweeId = intervieweeId
                     });
@@ -149,7 +156,8 @@ namespace VExam.Services.Interviewees
                         var questionModel = new QuestionViewModel
                         {
                             Question = item,
-                            Options = options
+                            Options = options,
+                            ExamSet = setInfo.FirstOrDefault()
                         };
                         question.Add(questionModel);
                     }
