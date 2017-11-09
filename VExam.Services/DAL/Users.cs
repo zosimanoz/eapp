@@ -45,13 +45,13 @@ namespace VExam.Services.DAL
                 {
                     string questionQuery = "SELECT * FROM dbo.Users " +
                                             "WHERE EmailAddress = @emailaddress ";
-                    var result = await db.GetAsync<User>(questionQuery,
+                    var result = await db.QueryAsync<User>(questionQuery,
                     new
                     {
                         emailaddress = emailaddress
                     });
                   
-                    return result;
+                    return result.FirstOrDefault();
                 }
             }
             catch (Exception)

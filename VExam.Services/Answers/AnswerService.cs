@@ -46,13 +46,13 @@ namespace VExam.Services.Answers
                                  }, tran);
                             }
                             tran.Commit();
-                             Console.WriteLine("result");
+                            Console.WriteLine("result");
                             Console.WriteLine(result);
                             return result;
                         }
                         catch (Exception)
                         {
-                             tran.Rollback();
+                            tran.Rollback();
                             throw;
                         }
                     }
@@ -86,7 +86,7 @@ namespace VExam.Services.Answers
             }
         }
 
-        public async Task<int> CheckAnswer(Result model)
+        public async Task<int> CheckAnswer(IEnumerable<Result> model)
         {
             var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
@@ -94,32 +94,63 @@ namespace VExam.Services.Answers
                 try
                 {
                     await db.OpenAsync();
-                    string checkAnswerQuery = "INSERT INTO dbo.Results VALUES " +
-                    "(@AnswerId,@MarksObtained,@Remarks,@CheckedBy,@ExaminedBy,@AuditTs,@Deleted)";
-                    var result = await db.ExecuteAsync(checkAnswerQuery,
-                            new
-                            {
-                                AnswerId = model.AnswerId,
-                                MarksObtained = model.MarksObtained,
-                                Remarks = model.Remarks,
-                                CheckedBy = model.CheckedBy,
-                                ExaminedBy = model.ExaminerId,
-                                AuditTs = model.AuditTs,
-                                Deleted = model.Deleted
-                            });
-
-                    if (result > 0)
+                    foreach (var item in model)
                     {
-                        string updateAnswerByIntervieweeQuery = "UPDATE AnswersByInterviewees " +
-                        "SET IsChecked = 1 WHERE AnswerId = @AnswerId";
-                        await db.ExecuteAsync(updateAnswerByIntervieweeQuery,
-                                new
-                                {
-                                    AnswerId = model.AnswerId
-                                });
+                        if (item.ResultId > 0)
+                        {
+                            string checkAnswerQuery = "UPDATE dbo.Results SET " +
+                            "AnswerId = @AnswerId, " +
+                            "MarksObtained = @MarksObtained, " +
+                            "Remarks = @Remarks, " +
+                            "ExaminerId = @ExaminerId, " +
+                            "AuditTs = @AuditTs "+
+                            "WHERE ResultId = @ResultId";
+                            var result = await db.ExecuteAsync(checkAnswerQuery,
+                                    new
+                                    {
+                                        AnswerId = item.AnswerId,
+                                        MarksObtained = item.MarksObtained,
+                                        Remarks = item.Remarks,
+                                        CheckedBy = item.CheckedBy,
+                                        ExaminerId = item.ExaminerId,
+                                        AuditTs = DateTimeOffset.UtcNow,
+                                        Deleted = item.Deleted,
+                                        ResultId=item.ResultId
+                                    });
+                        }
+                        else
+                        {
+                            Console.WriteLine(item.AnswerId);
+                            item.CheckedBy = 2;
+                            string checkAnswerQuery = "INSERT INTO dbo.Results VALUES " +
+                            "(@AnswerId,@MarksObtained,@Remarks,@CheckedBy,@ExaminerId,@AuditTs,@Deleted)";
+                            var result = await db.ExecuteAsync(checkAnswerQuery,
+                                    new
+                                    {
+                                        AnswerId = item.AnswerId,
+                                        MarksObtained = item.MarksObtained,
+                                        Remarks = item.Remarks,
+                                        CheckedBy = item.CheckedBy,
+                                        ExaminerId = item.ExaminerId,
+                                        AuditTs = DateTimeOffset.UtcNow,
+                                        Deleted = item.Deleted
+                                    });
+
+                            if (result > 0)
+                            {
+                                string updateAnswerByIntervieweeQuery = "UPDATE AnswersByInterviewees " +
+                                "SET IsChecked = 1 WHERE AnswerId = @AnswerId";
+                                await db.ExecuteAsync(updateAnswerByIntervieweeQuery,
+                                        new
+                                        {
+                                            AnswerId = item.AnswerId
+                                        });
+
+                            }
+                        }
 
                     }
-                    return result;
+                    return 1;
 
                 }
                 catch (Exception)
@@ -236,13 +267,13 @@ namespace VExam.Services.Answers
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
                     await db.OpenAsync();
-                    var query = "SELECT * FROM dbo.InterviewQuestionsToCheckAnswersView WHERE IntervieweeId = @IntervieweeId AND QuestionTypeId = @QuestionTypeId" ;
+                    var query = "SELECT * FROM dbo.InterviewQuestionsToCheckAnswersView WHERE IntervieweeId = @IntervieweeId AND QuestionTypeId = @QuestionTypeId";
                     var result = await db.QueryAsync<InterviewQuestionsForExamineer>(query, new
                     {
                         IntervieweeId = intervieweeId,
                         QuestionTypeId = 1
                     });
-                    
+
                     return result;
                 }
 

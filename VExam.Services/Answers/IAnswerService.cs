@@ -12,7 +12,7 @@ namespace VExam.Services.Answers
         Task<int> SaveAnswerAsync(IEnumerable<AnswersByInterviewees> Answer);
         // Task<QuestionViewModel> FilterAnswerAsync(int questionType);
         Task CheckObjectiveAnswers(long intervieweeId);
-        Task<int> CheckAnswer(Result model);
+        Task<int> CheckAnswer(IEnumerable<Result> model);
         Task<IEnumerable<QuestionViewModel>> GetInterviewQuestionAnswerSheet(long intervieweeId);
         Task<dynamic> GetInterviewAnswerSheetForExamineer(long intervieweeId);
          Task<dynamic> GetInterviewSubjectiveAnswerSheetForExamineer(long intervieweeId);

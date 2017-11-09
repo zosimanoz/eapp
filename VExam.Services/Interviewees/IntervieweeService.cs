@@ -76,7 +76,8 @@ namespace VExam.Services.Interviewees
                 using (var db = (SqlConnection)dbfactory.GetConnection())
                 {
                     await db.OpenAsync();
-                    var query = "SELECT * FROM dbo.IntervieweeView WHERE InterviewSessionId = @InterviewSessionId AND AttendedExam = @AttendedExam";
+                    var query = "SELECT * FROM dbo.IntervieweeView WHERE InterviewSessionId = @InterviewSessionId AND AttendedExam = @AttendedExam "+
+                    "ORDER BY TotalMarksObtained DESC";
 
                     var result = await db.QueryAsync<Interviewee>(query, new
                     {

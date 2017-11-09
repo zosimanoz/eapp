@@ -26,9 +26,11 @@ namespace VExam.DTO
         public string SessionTitle { get; set; }
         [IgnoreAll]
         public string JobTitle { get; set; }
-         [IgnoreAll]
+        [IgnoreAll]
         public string FullName { get; set; }
         [IgnoreAll]
         public int RowTotal { get; set; }
+        [IgnoreAll]
+        public decimal TotalMarksObtained { get; set; }
     }
 }

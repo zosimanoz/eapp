@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +12,8 @@ using VPortal.WebExtensions.API;
 namespace VExam.Api.Controllers
 {
     [Route("api/v1/checkanswer")]
-      [AllowAnonymous]
-    public class CheckAnswerApiController:BaseApiController
+    [AllowAnonymous]
+    public class CheckAnswerApiController : BaseApiController
     {
         private IAnswerService _answerService;
         private ILogger _logger;
@@ -28,8 +30,8 @@ namespace VExam.Api.Controllers
         {
             try
             {
-               var result = await _answerService.GetInterviewQuestionAnswerSheet(intervieweeId);
-               return HttpResponse(200, "", result);
+                var result = await _answerService.GetInterviewQuestionAnswerSheet(intervieweeId);
+                return HttpResponse(200, "", result);
             }
             catch (Exception e)
             {
@@ -45,8 +47,8 @@ namespace VExam.Api.Controllers
         {
             try
             {
-               var result = await _answerService.GetInterviewAnswerSheetForExamineer(intervieweeId);
-               return HttpResponse(200, "", result);
+                var result = await _answerService.GetInterviewAnswerSheetForExamineer(intervieweeId);
+                return HttpResponse(200, "", result);
             }
             catch (Exception e)
             {
@@ -61,8 +63,8 @@ namespace VExam.Api.Controllers
         {
             try
             {
-               var result = await _answerService.GetInterviewSubjectiveAnswerSheetForExamineer(intervieweeId);
-               return HttpResponse(200, "", result);
+                var result = await _answerService.GetInterviewSubjectiveAnswerSheetForExamineer(intervieweeId);
+                return HttpResponse(200, "", result);
             }
             catch (Exception e)
             {
@@ -73,12 +75,12 @@ namespace VExam.Api.Controllers
         [HttpGet]
         //  [Authorize]
         [Route("objective/answersheet/examineer/{intervieweeId}")]
-        public async Task<ApiResponse>GetInterviewObjectiveAnswerSheetForExaminer (long intervieweeId)
+        public async Task<ApiResponse> GetInterviewObjectiveAnswerSheetForExaminer(long intervieweeId)
         {
             try
             {
-               var result = await _answerService.GetInterviewObjectiveAnswerSheetForExamineer(intervieweeId);
-               return HttpResponse(200, "", result);
+                var result = await _answerService.GetInterviewObjectiveAnswerSheetForExamineer(intervieweeId);
+                return HttpResponse(200, "", result);
             }
             catch (Exception e)
             {
@@ -90,12 +92,12 @@ namespace VExam.Api.Controllers
         [HttpGet]
         //  [Authorize]
         [Route("check/objectiveanswer/{intervieweeId}")]
-        public async Task<ApiResponse>  checkObjectiveAnswers(long intervieweeId)
+        public async Task<ApiResponse> checkObjectiveAnswers(long intervieweeId)
         {
-             try
-            {
-              await _answerService.CheckObjectiveAnswers(intervieweeId);
-               return HttpResponse(200, "");
+            try
+            {Console.WriteLine("api called to mark objective answer" + intervieweeId.ToString());
+                await _answerService.CheckObjectiveAnswers(intervieweeId);
+                return HttpResponse(200, "");
             }
             catch (Exception e)
             {
@@ -106,12 +108,14 @@ namespace VExam.Api.Controllers
         [HttpPost]
         //  [Authorize]
         [Route("check/subjectiveanswer")]
-        public async Task<ApiResponse> checkSubjectiveAnswers([FromBody] Result model)
+        public async Task<ApiResponse> checkSubjectiveAnswers([FromBody] IEnumerable<Result> model)
         {
-             try
+            try
             {
-              await _answerService.CheckAnswer(model);
-               return HttpResponse(200, "");
+                Console.WriteLine("api called to mark subjective answer");
+                Console.WriteLine(model.FirstOrDefault().ExaminerId);
+                await _answerService.CheckAnswer(model);
+                return HttpResponse(200, "");
             }
             catch (Exception e)
             {

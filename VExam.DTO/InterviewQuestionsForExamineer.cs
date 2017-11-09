@@ -15,6 +15,6 @@ namespace VExam.DTO
         public long? ResultId { get; set; }
         public decimal MarksObtained { get; set; }
         public string Remarks { get; set; }
-
+        public long ExaminerId { get; set; }
     }
 }

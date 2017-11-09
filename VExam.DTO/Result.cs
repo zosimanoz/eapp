@@ -7,7 +7,7 @@ namespace VExam.DTO
     public class Result
     {
         [Key]
-        public long ResultId { get; set; }
+        public long? ResultId { get; set; }
         public long AnswerId { get; set; }
         public decimal MarksObtained { get; set; }
         public string Remarks { get; set; }
