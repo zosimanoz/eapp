@@ -16,6 +16,7 @@ namespace VExam.Api.Controllers
     [AllowAnonymous]
     public class ValuesApiController : Controller
     {
+        
         // GET api/values
         [HttpPost]
         // [ValidateAntiForgeryToken]
@@ -35,7 +36,7 @@ namespace VExam.Api.Controllers
             // bool isValid = ctx.ValidateCredentials(users.INumber, users.Password);
             // UserPrincipal user = UserPrincipal.FindByIdentity(ctx, users.INumber);
 
-
+             
             return new string[] { "value1", "value2" };
         }
 

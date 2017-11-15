@@ -10,6 +10,7 @@ using System;
 using VExam.DTO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VExam.Services.SessionwiseJobs
 {
@@ -31,7 +32,7 @@ namespace VExam.Services.SessionwiseJobs
                                 delete = 1,
                                 SessionwiseJobId = sessionwiseJobId
                             });
-                            Console.WriteLine(result);
+                    Console.WriteLine(result);
                     return result;
 
                 }
@@ -66,6 +67,36 @@ namespace VExam.Services.SessionwiseJobs
                 }
 
             }
+        }
+
+        public async Task<bool> CheckJobExistsInSessionAsync(long sessionId, int jobTitleId, long examSetId)
+        {
+            var dbfactory = DbFactoryProvider.GetFactory();
+            using (var db = (SqlConnection)dbfactory.GetConnection())
+            {
+                try
+                {
+                    await db.OpenAsync();
+                    string query = "SELECT * FROM dbo.SessionwiseJobs WHERE InterviewSessionId = @sessionId " +
+                    " AND JobTitleId = @jobTitleId AND ExamSetId = @examSetId";
+                    var result = await db.QueryAsync<SessionwiseJob>(query,
+                            new
+                            {
+                                sessionId = sessionId,
+                                jobTitleId = jobTitleId,
+                                examSetId = examSetId
+                            });
+                    bool exists = result.Any();
+                    Console.WriteLine(exists);
+                    return exists;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+            }
+
         }
 
     }

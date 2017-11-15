@@ -41,6 +41,23 @@ namespace VExam.Api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("check/existance")]
+        public async Task<ApiResponse> CheckJobExistsAsync([FromBody] SessionwiseJob model)
+        {
+            try
+            {
+                var result = await _sessionwiseJobsService.CheckJobExistsInSessionAsync(model.InterviewSessionId, model.JobTitleId,model.ExamSetId);
+                return HttpResponse(200, "", result);
+
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task<ApiResponse> UpdateAsync([FromBody] SessionwiseJob model)
