@@ -19,5 +19,9 @@ namespace VExam.DTO
 
         [IgnoreAll]
         public int RowTotal { get; set; }
+        [IgnoreAll]
+        public string DepartmentName { get; set; }
+        [IgnoreAll]
+        public string RoleTitle { get; set; }
     }
 }

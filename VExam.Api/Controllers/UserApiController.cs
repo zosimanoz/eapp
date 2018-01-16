@@ -111,11 +111,7 @@ namespace VExam.Api.Controllers
         {
             try
             {
-                string whereCondition=" WHERE deleted = @delete ";
-                var result = await _userService.CrudService.GetListAsync(whereCondition,
-                new {
-                    delete=0
-                });
+                var result = await _userService.GetAllActiveUsersAsync();
                 return HttpResponse(200, "", result);
                              
             }

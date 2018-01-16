@@ -10,6 +10,7 @@ using System;
 using VExam.DTO;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace VExam.Services.Users
 {
@@ -23,7 +24,7 @@ namespace VExam.Services.Users
             {
                 try
                 {
-                   await db.OpenAsync();
+                    await db.OpenAsync();
                     string questionQuery = "UPDATE dbo.Users SET deleted = @delete WHERE UserId = @UserId";
                     var result = await db.ExecuteAsync(questionQuery,
                             new
@@ -100,8 +101,9 @@ namespace VExam.Services.Users
             }
         }
 
-        public async Task<int> ResetPasswordAsync(string emailAddress,string password){
-             var dbfactory = DbFactoryProvider.GetFactory();
+        public async Task<int> ResetPasswordAsync(string emailAddress, string password)
+        {
+            var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
             {
                 try
@@ -128,6 +130,24 @@ namespace VExam.Services.Users
 
             }
         }
-        
+        public async Task<IEnumerable<User>> GetAllActiveUsersAsync()
+        {
+            var dbfactory = DbFactoryProvider.GetFactory();
+            using (var db = (SqlConnection)dbfactory.GetConnection())
+            {
+                try
+                {
+                    await db.OpenAsync();
+                    string questionQuery = "SELECT * FROM UsersView";
+                    var result = await db.QueryAsync<User>(questionQuery);
+                    return result;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
     }
 }
