@@ -104,5 +104,26 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<ApiResponse> GetAllUsers()
+        {
+            try
+            {
+                string whereCondition=" WHERE deleted = @delete ";
+                var result = await _userService.CrudService.GetListAsync(whereCondition,
+                new {
+                    delete=0
+                });
+                return HttpResponse(200, "", result);
+                             
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
     }
 }
