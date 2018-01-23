@@ -105,5 +105,20 @@ namespace VExam.Api.Controllers
                 return HttpResponse(500, e.Message);
             }
         }
+         [HttpGet]
+        [Route("jobtitle/{jobTitleId}")]
+        public async Task<ApiResponse> GetExamSetByJobTitleAsync(long jobTitleId)
+        {
+            try
+            {
+                var result = await _examSetService.GetExamSetsByJobTitleAsync(jobTitleId);
+                return HttpResponse(200, "", result);
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, () => e.Message, e);
+                return HttpResponse(500, e.Message);
+            }
+        }
     }
 }

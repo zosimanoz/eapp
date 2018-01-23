@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Dapper;
@@ -10,11 +11,11 @@ namespace VExam.Services.ExamSetService
 {
     public class ExamSetService : IExamSetService
     {
-     public CrudService<ExamSet> CrudService { get; set; } = new CrudService<ExamSet>();
+        public CrudService<ExamSet> CrudService { get; set; } = new CrudService<ExamSet>();
 
         public async Task<int> DeleteExamSetAsync(long examSetId)
         {
-           var dbfactory = DbFactoryProvider.GetFactory();
+            var dbfactory = DbFactoryProvider.GetFactory();
             using (var db = (SqlConnection)dbfactory.GetConnection())
             {
                 try
@@ -36,6 +37,31 @@ namespace VExam.Services.ExamSetService
                 }
 
             }
+        }
+
+        public async Task<IEnumerable<ExamSet>> GetExamSetsByJobTitleAsync(long jobTitleId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    string examSetsQuery = "SELECT * FROM ExamSets where JobTitleId = @jobTitleId AND Deleted = @deleted";
+                    var result = await db.QueryAsync<ExamSet>(examSetsQuery,
+                    new
+                    {
+                        jobTitleId =jobTitleId,
+                        deleted=0
+                    });
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }

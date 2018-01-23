@@ -10,6 +10,7 @@ namespace VExam.DTO
         [Required]
         public string EmailAddress { get; set; }
         [Required]
+        public long ExamSetId { get; set; }
         public long InterviewSessionId { get; set; }
         public int JobTitleId { get; set; }
         [Required]
@@ -28,6 +29,8 @@ namespace VExam.DTO
         public string JobTitle { get; set; }
         [IgnoreAll]
         public string FullName { get; set; }
+        [IgnoreAll]
+        public string ExamSetTitle { get; set; }
         [IgnoreAll]
         public int RowTotal { get; set; }
         [IgnoreAll]
