@@ -106,7 +106,7 @@ namespace VExam.Api.Controllers
             }
         }
          [HttpGet]
-        [Route("jobtitle/{jobTitleId}")]
+        [Route("by-jobtitle/{jobTitleId}")]
         public async Task<ApiResponse> GetExamSetByJobTitleAsync(long jobTitleId)
         {
             try

@@ -235,12 +235,14 @@ namespace VExam.Services.Answers
                     {
 
                         // can also check if the question type is subjective or objective;
-                        var optionsQuery = "SELECT * FROM dbo.ObjectiveOptionsWithAnswersByIntervieweesView WHERE QuestionId = @QuestionId";
+                        var optionsQuery = "SELECT * FROM dbo.ObjectiveOptionsWithAnswersByIntervieweesView WHERE SetQuestionId = @setQuestionId AND IntervieweeId = @IntervieweeId";
 
                         var options = await db.QueryAsync<ObjectiveQuestionOption>(optionsQuery, new
                         {
-                            QuestionId = item.QuestionId
+                            setQuestionId = item.SetQuestionId,
+                            IntervieweeId = intervieweeId
                         });
+                        
                         var questionModel = new InterviewQuestionAnswersheetForExamineerViewModel
                         {
                             Question = item,
@@ -302,11 +304,12 @@ namespace VExam.Services.Answers
                     {
 
                         // can also check if the question type is subjective or objective;
-                        var optionsQuery = "SELECT * FROM dbo.ObjectiveOptionsWithAnswersByIntervieweesView WHERE QuestionId = @QuestionId";
+                        var optionsQuery = "SELECT * FROM dbo.ObjectiveOptionsWithAnswersByIntervieweesView WHERE SetQuestionId = @setQuestionId AND IntervieweeId = @IntervieweeId";
 
                         var options = await db.QueryAsync<ObjectiveQuestionOption>(optionsQuery, new
                         {
-                            QuestionId = item.QuestionId
+                            setQuestionId = item.SetQuestionId,
+                            IntervieweeId = intervieweeId
                         });
                         var questionModel = new InterviewQuestionAnswersheetForExamineerViewModel
                         {
