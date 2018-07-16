@@ -134,7 +134,7 @@ namespace VExam.Services.Interviewees
                 {
                     await db.OpenAsync();
                     List<QuestionViewModel> question = new List<QuestionViewModel>();
-                    var query = "SELECT  ROW_NUMBER() OVER (ORDER BY QuestionId) AS SN, * FROM dbo.InterviewQuestions WHERE IntervieweeId = @IntervieweeId";
+                    var query = "SELECT  ROW_NUMBER() OVER (ORDER BY QuestionId) AS SN, dbo.GetTotalCorrectAnswerCount(QuestionId) as AnsCount,  * FROM dbo.InterviewQuestions WHERE IntervieweeId = @IntervieweeId";
                     var result = await db.QueryAsync<QuestionBanks>(query, new
                     {
                         IntervieweeId = intervieweeId
@@ -154,6 +154,11 @@ namespace VExam.Services.Interviewees
                         {
                             QuestionId = item.QuestionId
                         });
+
+                        // item.AnsCount = (from z in options
+                        //                 orderby z.QuestionId
+                        //                 select z.AnsCount).Distinct().FirstOrDefault();
+                    
                         var questionModel = new QuestionViewModel
                         {
                             Question = item,

@@ -12,6 +12,7 @@ namespace VExam.DTO
         public string Attachment { get; set; }
         public bool IsAnswer { get; set; }
         public bool Deleted { get; set; }
+      
         [IgnoreAll]
         public bool AnswerByInterviewees { get; set; }
     }
