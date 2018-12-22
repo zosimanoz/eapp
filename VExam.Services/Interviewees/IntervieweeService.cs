@@ -176,5 +176,28 @@ namespace VExam.Services.Interviewees
                 throw;
             }
         }
+
+        public async Task<Interviewee> GetIntervieweeDetailById(long intervieweeId)
+        {
+            try
+            {
+                var dbfactory = DbFactoryProvider.GetFactory();
+                using (var db = (SqlConnection)dbfactory.GetConnection())
+                {
+                    await db.OpenAsync();
+                    var query = "SELECT * FROM dbo.Interviewees where IntervieweeId = @IntervieweeId";
+
+                     var result = await db.QueryFirstAsync<Interviewee>(query, new
+                        {
+                            IntervieweeId = intervieweeId
+                        });
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

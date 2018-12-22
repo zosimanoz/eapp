@@ -19,5 +19,6 @@ namespace VExam.Services.Interviewees
         Task<bool> IntervieweeValidationAsync(string emailaddress, string contactnumber);
         Task<long> DeleteIntervieweeAsync(long intervieweeId);
         Task<IEnumerable<QuestionViewModel>> GetinterviewQuestions(long intervieweeId);
+        Task<Interviewee> GetIntervieweeDetailById(long intervieweeId);
     }
 }

@@ -18,7 +18,7 @@ namespace VExam.Api.Controllers
         }
         [HttpPost]
         [Route("api/v1/logout")]
-        [Authorize]
+       // [Authorize]
         public async Task<ApiResponse> Logout()
         {
             try
